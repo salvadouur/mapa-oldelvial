@@ -1,0 +1,76 @@
+🔑 Got authentication token
+
+🔍 Fetching latest deployment...
+✅ Found latest deployment (personal account)
+
+📦 Deployment ID:  dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS
+🌐 Deployment URL: oldelval-archivo-5nfk2301a-xienfuegos-projects.vercel.app
+📁 Project:        oldelval-archivo
+
+📋 Fetching file tree from API...
+
+✅ Got file tree (12 top-level entries)
+
+📁 Output directory: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source
+
+🗑️  Clearing previous download...
+
+⬇️  Downloading files...
+   (Use --verbose to see detailed progress)
+
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\.github\workflows\update-data.yml
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\api\dropbox-link.js
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\api\refresh.js
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\api\vimeo.js
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\scripts\generate-data.js
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\scripts\generate-vimeo.js
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\README.md
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\data.json
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\index.html
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\logo.png
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\oldelval_logo.png
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\package-lock.json
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\package.json
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\vercel.json
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\vimeo.json
+
+🎉 All files processed successfully!
+
+📊 Running comparison...
+
+📁 Total files: 15
+   ✅ Downloaded: 15
+   ⏭️  Skipped: 0
+   ❌ Failed: 0
+💾 Total size: 3.91 MB
+
+📈 File types breakdown:
+   js                 5 files
+   json               5 files
+   png                2 files
+   yml                1 files
+   md                 1 files
+   html               1 files
+
+🌳 File structure tree:
+
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\.github\workflows\update-data.yml
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\api\dropbox-link.js
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\api\refresh.js
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\api\vimeo.js
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\data.json
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\index.html
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\logo.png
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\oldelval_logo.png
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\package-lock.json
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\package.json
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\README.md
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\scripts\generate-data.js
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\scripts\generate-vimeo.js
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\vercel.json
+└── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\source\vimeo.json
+
+✨ Download and verification complete!
+📄 Full log saved to: C:\Users\Usuario\Desktop\mapa\out\dpl_4gycH9HNhafp9mAtMyP4Cn7ahZDS\download-log.txt
+   (Use --verbose to see file tree and skipped files)
+
