@@ -1,0 +1,218 @@
+🔑 Got authentication token
+
+🔍 Fetching latest deployment...
+✅ Found latest deployment (personal account)
+
+📦 Deployment ID:  dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt
+🌐 Deployment URL: duplicar-norte-3ms7qj112-xienfuegos-projects.vercel.app
+📁 Project:        duplicar-norte
+
+📋 Fetching file tree from API...
+
+✅ Got file tree (17 top-level entries)
+
+📁 Output directory: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source
+
+🗑️  Clearing previous download...
+
+⬇️  Downloading files...
+   (Use --verbose to see detailed progress)
+
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\.claude\launch.json
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\maplibre\maplibre-gl-shared.mjs
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\maplibre\maplibre-gl-worker.mjs
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\file.svg
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\globe.svg
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\next.svg
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\vercel.svg
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\window.svg
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\scripts\copy-maplibre-worker.mjs
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\scripts\kmz-to-geojson.mjs
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\carrusel\EditorCarrusel.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\carrusel\page.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\contenido\[id]\page.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\FilaContenido.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\NavAdmin.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\layout.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\page.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\login\LoginForm.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\login\page.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\SinSupabase.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\actions.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\layout.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\contenido\[slug]\page.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\serie\[slug]\page.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\serie\SerieVacia.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\serie\page.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\favicon.ico
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\globals.css
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\layout.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\page.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\admin\BlockEditor.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\admin\ContentEditor.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\admin\SelectorPunto.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\admin\SubirImagen.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\admin\campos.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\blocks\BlockRenderer.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\blocks\Galeria.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\blocks\VimeoEmbed.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\GrillaSatelital.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\MapHoverCard.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\MapaCliente.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\PanelObra.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\TrazaMap.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\mapStyle.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\setup.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\rail\ContentCard.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\rail\ContentDrawer.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\rail\ContentRail.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\rail\medidas.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\serie\SerieFeed.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\Cover.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\SiteHeader.tsx
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\data\obra.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\data\traza.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\content\admin.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\content\repository.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\content\schema.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\content\seed.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\content\sugerencias.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\supabase\client.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\supabase\env.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\supabase\server.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\format.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\traza-server.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\types.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\vimeo-server.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\vimeo.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\proxy.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\supabase\migrations\0001_init.sql
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\supabase\INSTALAR.md
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\supabase\importar-contenido.sql
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\supabase\seed.sql
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\.env.example
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\.env.production
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\AGENTS.md
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\CLAUDE.md
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\README.md
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\next-env.d.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\next.config.ts
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\package-lock.json
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\package.json
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\postcss.config.mjs
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\tsconfig.json
+✅ Downloaded: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\tsconfig.tsbuildinfo
+
+🎉 All files processed successfully!
+
+📊 Running comparison...
+
+📁 Total files: 84
+   ✅ Downloaded: 84
+   ⏭️  Skipped: 0
+   ❌ Failed: 0
+💾 Total size: 0.97 MB
+
+📈 File types breakdown:
+   tsx               36 files
+   ts                22 files
+   mjs                5 files
+   svg                5 files
+   json               4 files
+   md                 4 files
+   sql                3 files
+   ico                1 files
+   css                1 files
+   example            1 files
+
+🌳 File structure tree:
+
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\.claude\launch.json
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\.env.example
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\.env.production
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\AGENTS.md
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\CLAUDE.md
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\next-env.d.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\next.config.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\package-lock.json
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\package.json
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\postcss.config.mjs
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\file.svg
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\globe.svg
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\maplibre\maplibre-gl-shared.mjs
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\maplibre\maplibre-gl-worker.mjs
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\next.svg
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\vercel.svg
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\public\window.svg
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\README.md
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\scripts\copy-maplibre-worker.mjs
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\scripts\kmz-to-geojson.mjs
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\carrusel\EditorCarrusel.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\carrusel\page.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\contenido\[id]\page.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\FilaContenido.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\layout.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\NavAdmin.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\(panel)\page.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\actions.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\layout.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\login\LoginForm.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\login\page.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\admin\SinSupabase.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\contenido\[slug]\page.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\favicon.ico
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\globals.css
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\layout.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\page.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\serie\[slug]\page.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\serie\page.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\app\serie\SerieVacia.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\admin\BlockEditor.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\admin\campos.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\admin\ContentEditor.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\admin\SelectorPunto.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\admin\SubirImagen.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\blocks\BlockRenderer.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\blocks\Galeria.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\blocks\VimeoEmbed.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\Cover.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\GrillaSatelital.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\MapaCliente.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\MapHoverCard.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\mapStyle.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\PanelObra.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\setup.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\map\TrazaMap.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\rail\ContentCard.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\rail\ContentDrawer.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\rail\ContentRail.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\rail\medidas.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\serie\SerieFeed.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\components\SiteHeader.tsx
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\data\obra.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\data\traza.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\content\admin.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\content\repository.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\content\schema.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\content\seed.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\content\sugerencias.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\format.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\supabase\client.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\supabase\env.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\supabase\server.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\traza-server.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\types.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\vimeo-server.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\lib\vimeo.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\src\proxy.ts
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\supabase\importar-contenido.sql
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\supabase\INSTALAR.md
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\supabase\migrations\0001_init.sql
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\supabase\seed.sql
+├── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\tsconfig.json
+└── 📄 C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\source\tsconfig.tsbuildinfo
+
+✨ Download and verification complete!
+📄 Full log saved to: C:\Users\Usuario\Desktop\mapa\out\dpl_GnkfDTAD7NhrXEMDzR96JEKaVKSt\download-log.txt
+   (Use --verbose to see file tree and skipped files)
+

@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Superficies */
+  --color-abyss: #03060d;
+  --color-deep: #050b16;
+  --color-surface: #0a1424;
+  --color-surface-2: #101e33;
+  --color-line: #1c2c45;
+
+  /* Acentos */
+  --color-cyan: #4ecdf5;
+  --color-cyan-dim: #2b9dc4;
+  --color-mint: #34d399;
+  --color-amber: #f4a259;
+
+  /* Texto.
+     `ink-faint` se usa en versalitas de 9–10px sobre fondos muy oscuros: si se
+     baja más, deja de leerse. Los valores actuales pasan AA sobre `abyss`. */
+  --color-ink: #eef4fb;
+  --color-ink-soft: #b3c4d8;
+  --color-ink-faint: #8398b2;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-tech), ui-monospace, monospace;
+
+  --radius-card: 14px;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-abyss);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-cyan) 35%, transparent);
+  }
+}
+
+@utility label-tech {
+  /* Etiqueta técnica: versalitas mono con tracking amplio */
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+@utility panel {
+  background: color-mix(in srgb, var(--color-surface) 82%, transparent);
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(14px);
+  border-radius: var(--radius-card);
+}
+
+@utility scrim-bottom {
+  background: linear-gradient(
+    to top,
+    var(--color-abyss) 0%,
+    color-mix(in srgb, var(--color-abyss) 90%, transparent) 30%,
+    color-mix(in srgb, var(--color-abyss) 55%, transparent) 60%,
+    transparent 100%
+  );
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Scrollbars discretos, coherentes con el mapa oscuro.
+   Van en `base` a propósito: fuera de capa le ganarían a la utilidad
+   `no-scrollbar`, porque el CSS sin capa tiene prioridad sobre el que está
+   dentro de una. */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+/* MapLibre: reemplazamos el chrome por defecto por el propio */
+.maplibregl-ctrl-attrib {
+  background: rgba(3, 6, 13, 0.72) !important;
+  color: #5f7590 !important;
+  font-family: var(--font-mono) !important;
+  font-size: 10px !important;
+}
+.maplibregl-ctrl-attrib a {
+  color: #5f7590 !important;
+}
+.maplibregl-canvas:focus {
+  outline: none;
+}
+.maplibregl-ctrl-bottom-left {
+  display: none;
+}
+
+@keyframes aparece-tarjeta {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.aparece {
+  animation: aparece-tarjeta 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Radar de los contenidos especiales sobre el mapa: aros que se expanden desde
+   el punto y se desvanecen. Solo borde, interior transparente: el terreno se
+   tiene que seguir viendo a través de la marca. */
+@keyframes radar {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.85;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
