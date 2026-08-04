@@ -310,33 +310,53 @@ export default function TrazaMap({ contenidos, traza, paddingInferior }: Props) 
     };
   }, [listo, contenidos, abrirTarjeta, cerrarTarjeta, router]);
 
-  /* ---------------- Reproyección de la tarjeta y rótulos ---------------- */
+  /* ---------------- Reproyección, rótulos y anti-colisión ---------------- */
 
   useEffect(() => {
     const m = mapa.current;
     if (!m || !listo) return;
 
-    const alMover = () => {
+    // "move" cubre pan, zoom y rotate: alcanza con un solo listener para
+    // reproyectar la tarjeta activa y resolver qué rótulos entran.
+    const actualizar = () => {
       if (activo) setPosicion(proyectar(activo));
-    };
 
-    const alZoom = () => {
       const zoom = m.getZoom();
-      for (const el of document.querySelectorAll<HTMLElement>(".js-rotulo")) {
-        el.style.opacity = zoom >= ZOOM_ROTULOS ? "1" : "0";
-      }
-      for (const el of document.querySelectorAll<HTMLElement>(".js-titulo")) {
-        el.style.opacity = zoom >= ZOOM_TITULOS ? "1" : "0";
+      const mostrarRotulos = zoom >= ZOOM_ROTULOS;
+      const mostrarTitulos = zoom >= ZOOM_TITULOS;
+
+      const rotulos = [...document.querySelectorAll<HTMLElement>(".js-rotulo")];
+      const titulos = [...document.querySelectorAll<HTMLElement>(".js-titulo")];
+
+      for (const el of rotulos) el.style.opacity = mostrarRotulos ? "1" : "0";
+      for (const el of titulos) el.style.opacity = mostrarTitulos ? "1" : "0";
+      if (!mostrarRotulos && !mostrarTitulos) return;
+
+      // Anti-colisión en espacio de pantalla: dos puntos cercanos pueden
+      // terminar con los rótulos pisándose. Las estaciones tienen prioridad
+      // —son el esqueleto fijo de la traza—; un título de especial que se
+      // pisa con algo ya aceptado se oculta. El punto en sí sigue ahí y
+      // sigue siendo clickeable, solo se pierde el texto redundante.
+      const aceptados: DOMRect[] = [];
+      const candidatos = [
+        ...(mostrarRotulos ? rotulos : []),
+        ...(mostrarTitulos ? titulos : []),
+      ];
+      for (const el of candidatos) {
+        const rect = el.getBoundingClientRect();
+        if (aceptados.some((r) => seSuperponen(rect, r))) {
+          el.style.opacity = "0";
+        } else {
+          aceptados.push(rect);
+        }
       }
     };
 
-    m.on("move", alMover);
-    m.on("zoom", alZoom);
-    alZoom();
+    m.on("move", actualizar);
+    actualizar();
 
     return () => {
-      m.off("move", alMover);
-      m.off("zoom", alZoom);
+      m.off("move", actualizar);
     };
   }, [listo, activo, proyectar]);
 
@@ -505,6 +525,16 @@ function Referencias() {
 }
 
 /* ------------------------------------------------------------------ */
+
+/** Si dos rects de rótulos se superponen en pantalla, con un margen chico. */
+function seSuperponen(a: DOMRect, b: DOMRect, margen = 4): boolean {
+  return !(
+    a.right + margen < b.left ||
+    a.left - margen > b.right ||
+    a.bottom + margen < b.top ||
+    a.top - margen > b.bottom
+  );
+}
 
 /**
  * Zoom mínimo al encuadrar. Por debajo de `ZOOM_ROTULOS` los nombres de las
