@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 // maplibre-gl 6 ya no expone un default export: todo se importa con nombre.
-import { MapLibreMap, Marker, type GeoJSONSource, type LngLatBoundsLike } from "maplibre-gl";
+import { LngLat, MapLibreMap, Marker, type GeoJSONSource, type LngLatBoundsLike } from "maplibre-gl";
 import "./setup";
 import { useRouter } from "next/navigation";
 import { ARGENTINA_BOUNDS, ESTACIONES, ZOOM_MAX, ZOOM_MIN } from "@/data/traza";
@@ -113,9 +113,10 @@ export default function TrazaMap({ contenidos, traza, paddingInferior }: Props) 
       setListo(true);
       // El fitBounds del constructor prioriza mostrar la traza entera, pero
       // en una traza larga eso deja el zoom por debajo de donde se leen los
-      // rótulos. Ya asentada la cámara inicial, si hace falta se acerca un
-      // poco más —como una animación corta, no como un salto.
-      asegurarZoomLegible(m);
+      // rótulos. Ya asentada la cámara inicial, se recalcula centro+zoom para
+      // el mínimo legible —como una animación corta, no como un salto.
+      const camara = camaraDeEncuadre(m, traza, paddingInferior);
+      if (camara) m.easeTo({ ...camara, duration: 650 });
     });
 
     // Solo cuentan los gestos del usuario: `fitBounds` inicial también dispara
@@ -365,11 +366,8 @@ export default function TrazaMap({ contenidos, traza, paddingInferior }: Props) 
   const encuadrar = useCallback(() => {
     const m = mapa.current;
     if (!m) return;
-    m.fitBounds(boundsDeTraza(traza), {
-      padding: encuadrePadding(paddingInferior),
-      duration: 900,
-    });
-    m.once("moveend", () => asegurarZoomLegible(m));
+    const camara = camaraDeEncuadre(m, traza, paddingInferior);
+    if (camara) m.easeTo({ ...camara, duration: 900 });
   }, [traza, paddingInferior]);
 
   return (
@@ -392,13 +390,16 @@ export default function TrazaMap({ contenidos, traza, paddingInferior }: Props) 
         />
       )}
 
-      {/* Las cifras de la obra ahora viven en el header (arriba de todo, fuera
-          de este componente); acá solo quedan los controles del propio mapa.
-          Van todos en la banda superior: abajo está el cajón de contenidos,
-          que ocupa hasta el 80% de la pantalla al expandirse. */}
-      <div className="absolute top-32 right-3 z-20 flex flex-col items-end gap-1.5 md:right-6">
-        <BotonCentrarMapa onClick={encuadrar} />
+      {/* Las cifras de la obra viven en el header (fuera de este componente).
+          Los controles del propio mapa van abajo a la derecha, justo arriba
+          del cajón de contenidos —que igual puede taparlos al expandirse,
+          pero ahí ya no hace falta verlos. */}
+      <div
+        className="absolute right-3 z-20 flex flex-col items-end gap-2 md:right-6"
+        style={{ bottom: `calc(min(${ALTO_CAJON_RELATIVO * 100}dvh, ${ALTO_CAJON_MAX}px) + 18px)` }}
+      >
         <Referencias />
+        <BotonCentrarMapa onClick={encuadrar} />
       </div>
 
       <LlamadaAlMapa contenidos={contenidos.length} visible={!huboInteraccion && !activo} />
@@ -482,44 +483,48 @@ function Referencias() {
 
   return (
     <div className="flex flex-col items-end gap-2">
-      <div className="panel hidden px-4 py-3 lg:block">
-        <p className="label-tech mb-2.5 text-ink-faint">Referencias</p>
-        <ul className="space-y-1.5">
-          <li className="flex items-center gap-2.5">
-            <span className="h-px w-6 bg-[#7fe3ff]" />
-            <span className="label-tech text-[10px] text-ink-soft">
-              Traza Programa Duplicar Norte
-            </span>
-          </li>
-          <li className="flex items-center gap-2.5">
-            <span className="ml-2 block h-2 w-2 rotate-45 border border-cyan/80 bg-abyss" />
-            <span className="label-tech text-[10px] text-ink-soft">Estación de bombeo</span>
-          </li>
-          <li className="flex items-center gap-2.5">
-            <span className="ml-1.5 block h-3 w-3 rounded-full border border-cyan bg-cyan/60" />
-            <span className="label-tech text-[10px] text-ink-soft">Contenido especial</span>
-          </li>
-        </ul>
-      </div>
-
       {creditos && (
         <p className="panel label-tech max-w-[210px] px-3 py-2 text-[9px] leading-relaxed text-ink-soft">
           {ATRIBUCION.satelite}
         </p>
       )}
 
-      <button
-        type="button"
-        onClick={() => setCreditos((v) => !v)}
-        aria-expanded={creditos}
-        aria-label="Créditos de la cartografía"
-        title="Créditos de la cartografía"
-        className={`grid h-7 w-7 place-items-center rounded-full border border-line bg-abyss/70 text-[11px] backdrop-blur transition-colors hover:border-cyan/50 hover:text-cyan ${
-          creditos ? "text-cyan" : "text-ink-faint"
-        }`}
-      >
-        i
-      </button>
+      {/* Los créditos van a la izquierda de la caja, alineados con su última
+          línea ("Contenido especial") en vez de apilados debajo. */}
+      <div className="flex items-end gap-2">
+        <button
+          type="button"
+          onClick={() => setCreditos((v) => !v)}
+          aria-expanded={creditos}
+          aria-label="Créditos de la cartografía"
+          title="Créditos de la cartografía"
+          className={`grid h-7 w-7 shrink-0 place-items-center rounded-full border border-line bg-abyss/70 text-[11px] backdrop-blur transition-colors hover:border-cyan/50 hover:text-cyan ${
+            creditos ? "text-cyan" : "text-ink-faint"
+          }`}
+        >
+          i
+        </button>
+
+        <div className="panel hidden px-4 py-3 lg:block">
+          <p className="label-tech mb-2.5 text-ink-faint">Referencias</p>
+          <ul className="space-y-1.5">
+            <li className="flex items-center gap-2.5">
+              <span className="h-px w-6 bg-[#7fe3ff]" />
+              <span className="label-tech text-[10px] text-ink-soft">
+                Traza Programa Duplicar Norte
+              </span>
+            </li>
+            <li className="flex items-center gap-2.5">
+              <span className="ml-2 block h-2 w-2 rotate-45 border border-cyan/80 bg-abyss" />
+              <span className="label-tech text-[10px] text-ink-soft">Estación de bombeo</span>
+            </li>
+            <li className="flex items-center gap-2.5">
+              <span className="ml-1.5 block h-3 w-3 rounded-full border border-cyan bg-cyan/60" />
+              <span className="label-tech text-[10px] text-ink-soft">Contenido especial</span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
@@ -546,19 +551,49 @@ function seSuperponen(a: DOMRect, b: DOMRect, margen = 4): boolean {
 const ZOOM_MINIMO_ENCUADRE = 7;
 
 /**
- * Si el fitBounds recién aplicado dejó el zoom por debajo del mínimo legible,
- * acerca sin mover el centro. Deliberadamente no usa `cameraForBounds` para
- * calcular esto de antemano: en la práctica resultó poco confiable apenas
- * termina de cargar el estilo. Corregir después de que la cámara ya se movió
- * es más simple y no depende de ese cálculo.
+ * Centro y zoom para encuadrar la traza, con el piso de zoom aplicado.
+ *
+ * `cameraForBounds` da el ajuste natural (centro + zoom) que hace caber toda
+ * la traza respetando el padding de la UI. Ese centro no es el punto medio
+ * geográfico de la traza: está corrido hacia arriba-izquierda para compensar
+ * que el cajón (abajo) y las referencias (derecha) son más angostos que el
+ * margen superior/izquierdo.
+ *
+ * Si el zoom natural ya alcanza el mínimo, se usa tal cual. Si no, subir el
+ * zoom sin tocar el centro dejaría ese mismo corrimiento —pensado para la
+ * vista alejada— aplicado a una vista mucho más cercana, y el resultado queda
+ * corrido de más (la traza se ve desplazada hacia abajo-derecha). Por eso el
+ * centro se recalcula: mismo corrimiento respecto del punto medio, pero
+ * escalado al zoom final —a mayor zoom, el mismo padding en píxeles pesa
+ * menos en grados.
  */
-function asegurarZoomLegible(m: MapLibreMap) {
-  if (m.getZoom() < ZOOM_MINIMO_ENCUADRE) {
-    m.easeTo({ zoom: ZOOM_MINIMO_ENCUADRE, duration: 500 });
+function camaraDeEncuadre(
+  m: MapLibreMap,
+  traza: [number, number][],
+  paddingInferior?: number,
+): { center: { lng: number; lat: number }; zoom: number } | null {
+  const bounds = boundsDeTraza(traza);
+  const natural = m.cameraForBounds(bounds, { padding: encuadrePadding(paddingInferior) });
+  if (!natural || natural.zoom === undefined || !natural.center) return null;
+  const centroNatural = LngLat.convert(natural.center);
+
+  if (natural.zoom >= ZOOM_MINIMO_ENCUADRE) {
+    return { center: centroNatural, zoom: natural.zoom };
   }
+
+  const [[oeste, sur], [este, norte]] = bounds;
+  const medio = { lng: (oeste + este) / 2, lat: (sur + norte) / 2 };
+  const factor = Math.pow(2, natural.zoom - ZOOM_MINIMO_ENCUADRE); // < 1: acerca el centro al punto medio
+  return {
+    center: {
+      lng: medio.lng + (centroNatural.lng - medio.lng) * factor,
+      lat: medio.lat + (centroNatural.lat - medio.lat) * factor,
+    },
+    zoom: ZOOM_MINIMO_ENCUADRE,
+  };
 }
 
-function boundsDeTraza(coords: [number, number][]): LngLatBoundsLike {
+function boundsDeTraza(coords: [number, number][]): [[number, number], [number, number]] {
   let oeste = 180;
   let este = -180;
   let sur = 90;
@@ -594,14 +629,15 @@ function encuadrePadding(inferior?: number) {
   const invitacion = angosto ? 68 : 48;
 
   return {
-    // El header ahora incluye la fila de cifras de la obra, así que es más
-    // alto que antes: hay que dejar más aire arriba para que la traza no
-    // quede tapada por él ni por los rótulos de las estaciones.
+    // Aire para el header (arriba de todo, con el desplegable de datos de
+    // obra cerrado) y los rótulos de las estaciones.
     top: angosto ? 140 : 120,
     bottom: inferior ?? cajon + invitacion,
     // Ya no hay ficha a la izquierda (se fue al header): solo el margen justo
     // para que el punto más al oeste no quede pegado al borde.
     left: angosto ? 72 : 96,
+    // Referencias + créditos + encuadrar viven abajo a la derecha, no arriba:
+    // este margen es lo que les deja lugar en esa franja.
     right: angosto ? 72 : 264,
   };
 }

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CIFRAS } from "@/data/obra";
+import { CIFRAS, OBRA } from "@/data/obra";
 
 interface Props {
   /** Ruta activa, para marcar el ítem correspondiente. */
@@ -72,7 +72,20 @@ export default function SiteHeader({ activo, variante = "flotante", derecha, con
         )}
       </div>
 
-      {activo === "traza" && <DatosDeObra contenidos={contenidos} />}
+      {activo === "traza" && (
+        <div className="flex items-start justify-between gap-4">
+          <DatosDeObra contenidos={contenidos} />
+          <Link
+            href="/serie"
+            className="label-tech flex shrink-0 items-center gap-2 rounded-full border border-cyan/30 bg-cyan/10 px-3.5 py-1.5 text-cyan transition-colors hover:bg-cyan/20"
+          >
+            <svg viewBox="0 0 16 16" className="h-3 w-3 fill-current">
+              <path d="M4 2.5v11l9.5-5.5z" />
+            </svg>
+            Ver la serie
+          </Link>
+        </div>
+      )}
     </header>
   );
 }
@@ -120,6 +133,14 @@ function DatosDeObra({ contenidos }: { contenidos?: number }) {
               <span className="label-tech text-[9px] text-ink-faint">{contenidos} contenidos</span>
             )}
           </header>
+
+          <div className="border-b border-line px-3.5 pt-3 pb-3">
+            <p className="label-tech text-cyan">{OBRA.titular}</p>
+            <h2 className="mt-1 text-lg leading-tight font-semibold tracking-tight text-ink">
+              {OBRA.nombre}
+            </h2>
+            <p className="mt-1.5 text-[11.5px] leading-relaxed text-ink-soft">{OBRA.bajada}</p>
+          </div>
 
           <dl className="px-3.5 pt-1 pb-1">
             {CIFRAS.map((c) => (

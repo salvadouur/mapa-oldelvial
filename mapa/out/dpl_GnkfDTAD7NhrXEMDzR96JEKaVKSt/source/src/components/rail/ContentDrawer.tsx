@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import type { Rail } from "@/lib/types";
 import { ALTO_CAJON_MAX, ALTO_CAJON_RELATIVO } from "./medidas";
 import ContentRail from "./ContentRail";
@@ -64,16 +63,6 @@ export default function ContentDrawer({ rails }: Props) {
         ) : (
           <span />
         )}
-
-        <Link
-          href="/serie"
-          className="label-tech hidden items-center gap-2 rounded-full border border-cyan/30 bg-cyan/10 px-3.5 py-1.5 text-cyan transition-colors hover:bg-cyan/20 sm:flex"
-        >
-          <svg viewBox="0 0 16 16" className="h-3 w-3 fill-current">
-            <path d="M4 2.5v11l9.5-5.5z" />
-          </svg>
-          Ver la serie
-        </Link>
       </div>
 
       <div className="no-scrollbar relative flex-1 space-y-6 overflow-y-auto pb-5">
