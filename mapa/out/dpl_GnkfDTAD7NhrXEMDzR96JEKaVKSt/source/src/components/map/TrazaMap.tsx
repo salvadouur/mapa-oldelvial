@@ -109,7 +109,14 @@ export default function TrazaMap({ contenidos, traza, paddingInferior }: Props) 
     m.touchZoomRotate.disableRotation();
     mapa.current = m;
 
-    m.on("load", () => setListo(true));
+    m.on("load", () => {
+      setListo(true);
+      // El fitBounds del constructor prioriza mostrar la traza entera, pero
+      // en una traza larga eso deja el zoom por debajo de donde se leen los
+      // rótulos. Ya asentada la cámara inicial, si hace falta se acerca un
+      // poco más —como una animación corta, no como un salto.
+      asegurarZoomLegible(m);
+    });
 
     // Solo cuentan los gestos del usuario: `fitBounds` inicial también dispara
     // `movestart`, y no debería apagar la invitación antes de que la vea.
@@ -336,10 +343,13 @@ export default function TrazaMap({ contenidos, traza, paddingInferior }: Props) 
   /* ---------------- Controles ---------------- */
 
   const encuadrar = useCallback(() => {
-    mapa.current?.fitBounds(boundsDeTraza(traza), {
+    const m = mapa.current;
+    if (!m) return;
+    m.fitBounds(boundsDeTraza(traza), {
       padding: encuadrePadding(paddingInferior),
       duration: 900,
     });
+    m.once("moveend", () => asegurarZoomLegible(m));
   }, [traza, paddingInferior]);
 
   return (
@@ -366,7 +376,7 @@ export default function TrazaMap({ contenidos, traza, paddingInferior }: Props) 
           de este componente); acá solo quedan los controles del propio mapa.
           Van todos en la banda superior: abajo está el cajón de contenidos,
           que ocupa hasta el 80% de la pantalla al expandirse. */}
-      <div className="absolute top-44 right-3 z-20 flex flex-col items-end gap-1.5 md:top-36 md:right-6">
+      <div className="absolute top-32 right-3 z-20 flex flex-col items-end gap-1.5 md:right-6">
         <BotonCentrarMapa onClick={encuadrar} />
         <Referencias />
       </div>
@@ -496,6 +506,28 @@ function Referencias() {
 
 /* ------------------------------------------------------------------ */
 
+/**
+ * Zoom mínimo al encuadrar. Por debajo de `ZOOM_ROTULOS` los nombres de las
+ * estaciones no se leen, y en una traza tan larga el ajuste "que entre todo"
+ * puede quedar bastante por debajo. Se prioriza la legibilidad: el encuadre
+ * puede no mostrar la traza de punta a punta, y hay que panear para verla
+ * completa.
+ */
+const ZOOM_MINIMO_ENCUADRE = 7;
+
+/**
+ * Si el fitBounds recién aplicado dejó el zoom por debajo del mínimo legible,
+ * acerca sin mover el centro. Deliberadamente no usa `cameraForBounds` para
+ * calcular esto de antemano: en la práctica resultó poco confiable apenas
+ * termina de cargar el estilo. Corregir después de que la cámara ya se movió
+ * es más simple y no depende de ese cálculo.
+ */
+function asegurarZoomLegible(m: MapLibreMap) {
+  if (m.getZoom() < ZOOM_MINIMO_ENCUADRE) {
+    m.easeTo({ zoom: ZOOM_MINIMO_ENCUADRE, duration: 500 });
+  }
+}
+
 function boundsDeTraza(coords: [number, number][]): LngLatBoundsLike {
   let oeste = 180;
   let este = -180;
@@ -535,7 +567,7 @@ function encuadrePadding(inferior?: number) {
     // El header ahora incluye la fila de cifras de la obra, así que es más
     // alto que antes: hay que dejar más aire arriba para que la traza no
     // quede tapada por él ni por los rótulos de las estaciones.
-    top: angosto ? 200 : 155,
+    top: angosto ? 140 : 120,
     bottom: inferior ?? cajon + invitacion,
     // Ya no hay ficha a la izquierda (se fue al header): solo el margen justo
     // para que el punto más al oeste no quede pegado al borde.

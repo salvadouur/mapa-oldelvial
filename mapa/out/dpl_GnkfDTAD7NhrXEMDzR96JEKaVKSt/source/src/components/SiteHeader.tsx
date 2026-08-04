@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { CIFRAS } from "@/data/obra";
 
@@ -69,42 +72,84 @@ export default function SiteHeader({ activo, variante = "flotante", derecha, con
         )}
       </div>
 
-      {activo === "traza" && <CifrasObra contenidos={contenidos} />}
+      {activo === "traza" && <DatosDeObra contenidos={contenidos} />}
     </header>
   );
 }
 
 /**
- * Cifras de la obra, en la misma línea del header.
+ * Cifras de la obra, como desplegable dentro del header.
  *
- * Antes eran una tarjeta propia (`PanelObra`) flotando sobre el mapa, con el
- * título "Programa Duplicar Norte" repetido: ya está arriba, en el logo. Acá
- * quedan como chips, siguiendo el mismo patrón que la ficha de un especial.
+ * Antes era una tarjeta propia (`PanelObra`) flotando sobre el mapa, siempre
+ * visible en desktop. Acá arranca siempre cerrada —en cualquier tamaño de
+ * pantalla— y mantiene el mismo estilo de tabla de datos que tenía: valor
+ * grande a la izquierda, etiqueta a la derecha, separadas por líneas finas.
  */
-function CifrasObra({ contenidos }: { contenidos?: number }) {
+function DatosDeObra({ contenidos }: { contenidos?: number }) {
+  const [abierto, setAbierto] = useState(false);
+
   return (
-    <ul className="flex flex-wrap items-center gap-1.5">
-      <li className="label-tech flex items-center gap-1.5 rounded-full border border-mint/30 bg-mint/10 px-2.5 py-1 text-mint">
-        <span className="relative flex h-1.5 w-1.5 shrink-0">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-mint opacity-75" />
-          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-mint" />
-        </span>
-        En obra
-      </li>
-      {CIFRAS.map((c) => (
-        <li
-          key={c.etiqueta}
-          className="label-tech rounded-full border border-line bg-abyss/60 px-2.5 py-1 text-ink-soft backdrop-blur"
+    <div className="relative self-start">
+      <button
+        type="button"
+        onClick={() => setAbierto((v) => !v)}
+        aria-expanded={abierto}
+        className="flex items-center gap-2.5 rounded-full border border-line bg-abyss/70 px-3 py-1.5 backdrop-blur transition-colors hover:border-cyan/50"
+      >
+        <Latido />
+        <span className="label-tech text-[10px] whitespace-nowrap text-ink">Datos de obra</span>
+        <svg
+          viewBox="0 0 16 16"
+          className={`h-3 w-3 shrink-0 text-cyan transition-transform duration-300 ${abierto ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
         >
-          <span className="text-ink">{c.valor}</span>
-          {c.unidad ? ` ${c.unidad}` : ""} {c.etiqueta}
-        </li>
-      ))}
-      {typeof contenidos === "number" && (
-        <li className="label-tech rounded-full border border-line bg-abyss/60 px-2.5 py-1 text-ink-faint backdrop-blur">
-          {contenidos} contenidos
-        </li>
+          <path d="M3 6l5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
+      {abierto && (
+        <div className="panel absolute top-full left-0 mt-2 w-[248px] overflow-hidden">
+          <header className="flex items-center justify-between gap-3 border-b border-line px-3.5 py-2.5">
+            <span className="flex items-center gap-2">
+              <Latido />
+              <span className="label-tech text-[9px] text-mint">En obra</span>
+            </span>
+            {typeof contenidos === "number" && (
+              <span className="label-tech text-[9px] text-ink-faint">{contenidos} contenidos</span>
+            )}
+          </header>
+
+          <dl className="px-3.5 pt-1 pb-1">
+            {CIFRAS.map((c) => (
+              <div
+                key={c.etiqueta}
+                className="flex items-baseline justify-between gap-3 border-t border-line/70 py-2.5 first:border-t-0"
+              >
+                <dd className="flex items-baseline gap-0.5">
+                  <span className="text-xl leading-none font-semibold tracking-tight text-cyan">
+                    {c.valor}
+                  </span>
+                  {c.unidad && (
+                    <span className="label-tech text-[9px] text-ink-soft">{c.unidad}</span>
+                  )}
+                </dd>
+                <dt className="label-tech text-right text-[8.5px] text-ink-faint">{c.etiqueta}</dt>
+              </div>
+            ))}
+          </dl>
+        </div>
       )}
-    </ul>
+    </div>
+  );
+}
+
+function Latido() {
+  return (
+    <span className="relative flex h-1.5 w-1.5 shrink-0">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-mint opacity-75" />
+      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-mint" />
+    </span>
   );
 }
