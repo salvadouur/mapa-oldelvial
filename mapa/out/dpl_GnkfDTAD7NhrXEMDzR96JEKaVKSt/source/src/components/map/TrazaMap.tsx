@@ -8,10 +8,9 @@ import { useRouter } from "next/navigation";
 import { ARGENTINA_BOUNDS, ESTACIONES, ZOOM_MAX, ZOOM_MIN } from "@/data/traza";
 import type { MappedContent } from "@/lib/types";
 import { ALTO_CAJON_MAX, ALTO_CAJON_RELATIVO } from "@/components/rail/medidas";
-import { ATRIBUCION, VELO, buildStyle, type Basemap } from "./mapStyle";
+import { ATRIBUCION, buildStyle } from "./mapStyle";
 import MapHoverCard from "./MapHoverCard";
 import GrillaSatelital from "./GrillaSatelital";
-import PanelObra from "./PanelObra";
 
 interface Props {
   contenidos: MappedContent[];
@@ -38,7 +37,9 @@ export default function TrazaMap({ contenidos, traza, paddingInferior }: Props) 
   const marcadores = useRef<Marker[]>([]);
 
   const [listo, setListo] = useState(false);
-  const [basemap, setBasemap] = useState<Basemap>("satelite");
+  // Única capa base: se sacó el selector Satélite/Trazado a pedido, así que
+  // esto queda fijo en vez de ser estado.
+  const basemap = "satelite" as const;
   const [activo, setActivo] = useState<MappedContent | null>(null);
   const [posicion, setPosicion] = useState<{ x: number; y: number } | null>(null);
   /** Se vuelve `true` al primer gesto sobre el mapa: apaga la invitación. */
@@ -332,20 +333,6 @@ export default function TrazaMap({ contenidos, traza, paddingInferior }: Props) 
     };
   }, [listo, activo, proyectar]);
 
-  /* ---------------- Capa base ---------------- */
-
-  useEffect(() => {
-    const m = mapa.current;
-    if (!m || !listo) return;
-    const satelite = basemap === "satelite";
-
-    m.setLayoutProperty("base-satelite", "visibility", satelite ? "visible" : "none");
-    m.setLayoutProperty("base-oscuro", "visibility", satelite ? "none" : "visible");
-    m.setLayoutProperty("etiquetas-lugares", "visibility", satelite ? "none" : "visible");
-    m.setPaintProperty("velo-azul", "background-color", VELO[basemap].color);
-    m.setPaintProperty("velo-azul", "background-opacity", VELO[basemap].opacidad);
-  }, [basemap, listo]);
-
   /* ---------------- Controles ---------------- */
 
   const encuadrar = useCallback(() => {
@@ -375,30 +362,13 @@ export default function TrazaMap({ contenidos, traza, paddingInferior }: Props) 
         />
       )}
 
-      {/* Los paneles viven en la banda superior: abajo está el cajón de
-          contenidos, que ocupa hasta el 80% de la pantalla al expandirse. */}
-      <div className="absolute top-18 left-3 z-20 md:top-24 md:left-6">
-        <PanelObra contenidos={contenidos.length} onEncuadrar={encuadrar} />
-      </div>
-
-      <div className="absolute top-18 right-3 z-20 flex flex-col items-end gap-2 md:top-24 md:right-6">
-        <div className="flex overflow-hidden rounded-lg border border-line bg-abyss/70 backdrop-blur">
-          {(["satelite", "oscuro"] as const).map((b) => (
-            <button
-              key={b}
-              type="button"
-              onClick={() => setBasemap(b)}
-              aria-pressed={basemap === b}
-              className={`label-tech px-2.5 py-2 text-[10px] transition-colors md:px-3 md:text-[11px] ${
-                basemap === b ? "bg-cyan/15 text-cyan" : "text-ink-faint hover:text-ink-soft"
-              }`}
-            >
-              {b === "satelite" ? "Satélite" : "Trazado"}
-            </button>
-          ))}
-        </div>
-
-        <Referencias basemap={basemap} />
+      {/* Las cifras de la obra ahora viven en el header (arriba de todo, fuera
+          de este componente); acá solo quedan los controles del propio mapa.
+          Van todos en la banda superior: abajo está el cajón de contenidos,
+          que ocupa hasta el 80% de la pantalla al expandirse. */}
+      <div className="absolute top-44 right-3 z-20 flex flex-col items-end gap-1.5 md:top-36 md:right-6">
+        <BotonCentrarMapa onClick={encuadrar} />
+        <Referencias />
       </div>
 
       <LlamadaAlMapa contenidos={contenidos.length} visible={!huboInteraccion && !activo} />
@@ -444,13 +414,40 @@ function LlamadaAlMapa({ contenidos, visible }: { contenidos: number; visible: b
 }
 
 /**
+ * Recentra el mapa sobre la traza completa.
+ *
+ * Antes vivía como un link de texto en el footer de `PanelObra`, que en móvil
+ * arranca colapsado: el control quedaba inalcanzable hasta desplegar la
+ * tarjeta. Como ícono fijo sobre el mapa está siempre a mano, sin depender del
+ * estado de ningún otro panel.
+ */
+function BotonCentrarMapa({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      title="Encuadrar la traza completa"
+      aria-label="Encuadrar la traza completa"
+      className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line bg-abyss/70 text-ink-faint backdrop-blur transition-colors hover:border-cyan/50 hover:text-cyan"
+    >
+      <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6">
+        <path d="M1.5 5V2.5A1 1 0 0 1 2.5 1.5H5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M11 1.5h2.5a1 1 0 0 1 1 1V5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M14.5 11v2.5a1 1 0 0 1-1 1H11" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M5 14.5H2.5a1 1 0 0 1-1-1V11" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </button>
+  );
+}
+
+/**
  * Referencias del mapa y atribución de las teselas.
  *
  * La atribución está detrás de un botón en vez de impresa sobre el mapa: no
  * puede sacarse del todo —Esri y OpenStreetMap la exigen para usar las teselas
  * sin API key— pero sí puede dejar de ocupar la pantalla.
  */
-function Referencias({ basemap }: { basemap: Basemap }) {
+function Referencias() {
   const [creditos, setCreditos] = useState(false);
 
   return (
@@ -477,7 +474,7 @@ function Referencias({ basemap }: { basemap: Basemap }) {
 
       {creditos && (
         <p className="panel label-tech max-w-[210px] px-3 py-2 text-[9px] leading-relaxed text-ink-soft">
-          {ATRIBUCION[basemap]}
+          {ATRIBUCION.satelite}
         </p>
       )}
 
@@ -510,7 +507,8 @@ function boundsDeTraza(coords: [number, number][]): LngLatBoundsLike {
     sur = Math.min(sur, lat);
     norte = Math.max(norte, lat);
   }
-  const margen = 0.25;
+  // Un poco más cerca que el margen por defecto: la traza llena más pantalla.
+  const margen = 0.14;
   return [
     [oeste - margen, sur - margen],
     [este + margen, norte + margen],
@@ -534,13 +532,14 @@ function encuadrePadding(inferior?: number) {
   const invitacion = angosto ? 68 : 48;
 
   return {
-    // En móvil los paneles de arriba se contraen, así que solo hay que dejar
-    // aire para los rótulos de las estaciones, que se dibujan centrados sobre
-    // el punto y se salen del encuadre si el margen es escaso.
-    top: angosto ? 104 : 96,
+    // El header ahora incluye la fila de cifras de la obra, así que es más
+    // alto que antes: hay que dejar más aire arriba para que la traza no
+    // quede tapada por él ni por los rótulos de las estaciones.
+    top: angosto ? 200 : 155,
     bottom: inferior ?? cajon + invitacion,
-    // En escritorio: ficha de obra a la izquierda, referencias a la derecha.
-    left: angosto ? 72 : 296,
+    // Ya no hay ficha a la izquierda (se fue al header): solo el margen justo
+    // para que el punto más al oeste no quede pegado al borde.
+    left: angosto ? 72 : 96,
     right: angosto ? 72 : 264,
   };
 }
