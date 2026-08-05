@@ -33,7 +33,7 @@ export default async function PublicacionPage(props: PageProps<"/contenido/[slug
   const indice = especiales.findIndex((c) => c.slug === slug);
   const siguiente = indice >= 0 ? especiales[(indice + 1) % especiales.length] : null;
 
-  const { destacado, resto } = separarDestacado(contenido.blocks);
+  const { destacado, resto } = separarDestacado(bloquesEfectivos(contenido));
 
   return (
     <div className="min-h-dvh bg-abyss">
@@ -89,7 +89,7 @@ function Hero({ contenido }: { contenido: Content }) {
         <div className="mb-4 flex items-center gap-3">
           <span className="h-px w-8 bg-cyan" />
           <span className="label-tech text-cyan">
-            {contenido.locationName ?? "Traza"} · Especial
+            {contenido.locationName ?? "Traza"} · {contenido.type === "especial" ? "Especial" : "Serie"}
           </span>
         </div>
 
@@ -97,9 +97,11 @@ function Hero({ contenido }: { contenido: Content }) {
           {contenido.title}
         </h1>
 
-        {contenido.subtitle && (
+        {/* Los simples no tienen subtítulo propio: usan el resumen, que para
+            ellos hace las veces de bajada. */}
+        {(contenido.subtitle ?? contenido.summary) && (
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-soft md:text-xl">
-            {contenido.subtitle}
+            {contenido.subtitle ?? contenido.summary}
           </p>
         )}
 
@@ -142,6 +144,31 @@ function PieDePublicacion({ siguiente }: { siguiente: Content | null }) {
       </div>
     </footer>
   );
+}
+
+/**
+ * Los simples no tienen bloques propios —viven del video + resumen de nivel
+ * superior, pensados para el carrusel y `/serie`—, así que al abrirlos con el
+ * mismo formato de ficha que un especial no habría nada que mostrar debajo
+ * del hero. Se arma un video + texto de arranque a partir de esos campos,
+ * igual que si fueran los dos primeros bloques de un especial.
+ */
+function bloquesEfectivos(contenido: Content): Block[] {
+  if (contenido.blocks.length > 0) return contenido.blocks;
+  if (!contenido.vimeoId) return [];
+
+  const bloques: Block[] = [
+    { id: "video-principal", position: 0, type: "video", data: { vimeoId: contenido.vimeoId } },
+  ];
+  if (contenido.summary) {
+    bloques.push({
+      id: "texto-principal",
+      position: 1,
+      type: "text",
+      data: { body: contenido.summary },
+    });
+  }
+  return bloques;
 }
 
 /**

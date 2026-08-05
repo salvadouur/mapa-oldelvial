@@ -9,9 +9,14 @@ interface Props {
   destacado?: boolean;
 }
 
-/** Ruta de consumo según el tipo: playlist de la serie o ficha del especial. */
+/**
+ * Ruta de consumo: la misma ficha que usan los especiales del mapa, para
+ * simples y especiales por igual. La playlist de scroll infinito sigue
+ * existiendo en `/serie`, pero ya no es a donde llevan las tarjetas del
+ * carrusel de la home.
+ */
 export function hrefDeContenido(c: Content): string {
-  return c.type === "simple" ? `/serie/${c.slug}` : `/contenido/${c.slug}`;
+  return `/contenido/${c.slug}`;
 }
 
 export default function ContentCard({ contenido, destacado = false }: Props) {
