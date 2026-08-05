@@ -488,8 +488,8 @@ function Referencias() {
   const [creditos, setCreditos] = useState(false);
 
   return (
-    <div className="relative flex flex-col items-end gap-2 lg:block">
-      <div className="panel hidden px-4 py-3 lg:block">
+    <div className="relative">
+      <div className="panel px-4 py-3">
         <p className="label-tech mb-2.5 text-ink-faint">Referencias</p>
         <ul className="space-y-1.5">
           <li className="flex items-center gap-2.5">
@@ -509,13 +509,15 @@ function Referencias() {
         </ul>
       </div>
 
-      {/* En desktop el botón de créditos flota arriba a la derecha de la
-          caja; el texto de atribución, si está abierto, se agrega antes en
-          el DOM y por eso aparece a su izquierda (el bloque solo tiene fijo
-          el borde derecho, así que crece hacia la izquierda). En mobile no
-          hay caja a la cual anclarse: este bloque queda en flujo normal,
-          como un control suelto de nuevo. */}
-      <div className="static flex items-center gap-2 lg:absolute lg:-top-9 lg:right-0">
+      {/* Ancla por `bottom-full` (el borde de abajo del bloque queda pegado
+          arriba de la caja, más el margen de `mb-2`) en vez de un offset fijo
+          en píxeles: así el botón no se corre cuando aparece el cartel de
+          atribución al lado, sea cual sea su alto. `items-end` alinea ambos
+          por abajo, para que sea el cartel el que crece hacia arriba y no el
+          botón el que se recentra. El cartel se agrega antes en el DOM, así
+          que queda a la izquierda del botón (el bloque solo tiene fijo el
+          borde derecho, crece hacia la izquierda). */}
+      <div className="absolute right-0 bottom-full mb-2 flex items-end gap-2">
         {creditos && (
           <p className="panel label-tech max-w-[210px] px-3 py-2 text-[9px] leading-relaxed text-ink-soft">
             {ATRIBUCION.satelite}

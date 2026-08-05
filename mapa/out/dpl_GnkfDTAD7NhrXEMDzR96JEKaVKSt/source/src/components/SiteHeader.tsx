@@ -52,41 +52,48 @@ export default function SiteHeader({ activo, variante = "flotante", derecha, con
           </span>
         </Link>
 
-        {derecha ?? (
-          <nav className="flex items-center gap-1">
-            {NAV.map((n) => (
-              <Link
-                key={n.href}
-                href={n.href}
-                aria-current={activo === n.clave ? "page" : undefined}
-                className={`label-tech rounded px-3 py-2 transition-colors ${
-                  activo === n.clave
-                    ? "text-cyan"
-                    : "text-ink-faint hover:bg-white/5 hover:text-ink-soft"
-                }`}
-              >
-                {n.texto}
-              </Link>
-            ))}
-          </nav>
-        )}
+        {derecha ??
+          (activo === "traza" ? (
+            // En la home, "Ver la serie" reemplaza a la nav Traza/Serie:
+            // "Traza" es redundante si ya estás ahí, y "Serie" queda cubierto
+            // por este mismo botón.
+            <VerLaSerie />
+          ) : (
+            <nav className="flex items-center gap-1">
+              {NAV.map((n) => (
+                <Link
+                  key={n.href}
+                  href={n.href}
+                  aria-current={activo === n.clave ? "page" : undefined}
+                  className={`label-tech rounded px-3 py-2 transition-colors ${
+                    activo === n.clave
+                      ? "text-cyan"
+                      : "text-ink-faint hover:bg-white/5 hover:text-ink-soft"
+                  }`}
+                >
+                  {n.texto}
+                </Link>
+              ))}
+            </nav>
+          ))}
       </div>
 
-      {activo === "traza" && (
-        <div className="flex items-start justify-between gap-4">
-          <DatosDeObra contenidos={contenidos} />
-          <Link
-            href="/serie"
-            className="label-tech flex shrink-0 items-center gap-2 rounded-full border border-cyan/30 bg-cyan/10 px-3.5 py-1.5 text-cyan transition-colors hover:bg-cyan/20"
-          >
-            <svg viewBox="0 0 16 16" className="h-3 w-3 fill-current">
-              <path d="M4 2.5v11l9.5-5.5z" />
-            </svg>
-            Ver la serie
-          </Link>
-        </div>
-      )}
+      {activo === "traza" && <DatosDeObra contenidos={contenidos} />}
     </header>
+  );
+}
+
+function VerLaSerie() {
+  return (
+    <Link
+      href="/serie"
+      className="label-tech flex shrink-0 items-center gap-2 rounded-full border border-cyan/30 bg-cyan/10 px-3.5 py-1.5 text-cyan transition-colors hover:bg-cyan/20"
+    >
+      <svg viewBox="0 0 16 16" className="h-3 w-3 fill-current">
+        <path d="M4 2.5v11l9.5-5.5z" />
+      </svg>
+      Ver la serie
+    </Link>
   );
 }
 
