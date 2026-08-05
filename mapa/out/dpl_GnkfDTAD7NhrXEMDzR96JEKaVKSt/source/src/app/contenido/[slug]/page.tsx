@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import Cover from "@/components/Cover";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
-import { getContentBySlug, getEspeciales } from "@/lib/content/repository";
+import { getContentBySlug, getEspeciales, getSimples } from "@/lib/content/repository";
 import { formatDuracion, formatFecha } from "@/lib/format";
 import type { Block, Content } from "@/lib/types";
 
@@ -29,9 +29,15 @@ export default async function PublicacionPage(props: PageProps<"/contenido/[slug
   const contenido = await getContentBySlug(slug);
   if (!contenido) notFound();
 
-  const especiales = await getEspeciales();
-  const indice = especiales.findIndex((c) => c.slug === slug);
-  const siguiente = indice >= 0 ? especiales[(indice + 1) % especiales.length] : null;
+  // Anterior/siguiente navegan dentro del mismo tipo: un especial entre
+  // especiales, un simple entre simples —son dos recorridos distintos, mezclar
+  // "próximo" entre ambos no tendría un orden que tenga sentido para el
+  // usuario.
+  const lista = contenido.type === "especial" ? await getEspeciales() : await getSimples();
+  const indice = lista.findIndex((c) => c.slug === slug);
+  const hayMasDeUno = indice >= 0 && lista.length > 1;
+  const anterior = hayMasDeUno ? lista[(indice - 1 + lista.length) % lista.length] : null;
+  const siguiente = hayMasDeUno ? lista[(indice + 1) % lista.length] : null;
 
   const { destacado, resto } = separarDestacado(bloquesEfectivos(contenido));
 
@@ -61,7 +67,7 @@ export default async function PublicacionPage(props: PageProps<"/contenido/[slug
         ))}
       </main>
 
-      <PieDePublicacion siguiente={siguiente} />
+      <PieDePublicacion anterior={anterior} siguiente={siguiente} />
     </div>
   );
 }
@@ -122,7 +128,13 @@ function Hero({ contenido }: { contenido: Content }) {
   );
 }
 
-function PieDePublicacion({ siguiente }: { siguiente: Content | null }) {
+function PieDePublicacion({
+  anterior,
+  siguiente,
+}: {
+  anterior: Content | null;
+  siguiente: Content | null;
+}) {
   return (
     <footer className="border-t border-line">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 md:flex-row md:items-center md:justify-between md:px-8">
@@ -133,14 +145,25 @@ function PieDePublicacion({ siguiente }: { siguiente: Content | null }) {
           ← Volver a la traza
         </Link>
 
-        {siguiente && (
-          <Link href={`/contenido/${siguiente.slug}`} className="group text-right">
-            <span className="label-tech block text-ink-faint">Próximo especial</span>
-            <span className="mt-1 block text-lg font-semibold tracking-tight text-ink transition-colors group-hover:text-cyan">
-              {siguiente.title} →
-            </span>
-          </Link>
-        )}
+        <div className="flex items-center gap-8">
+          {anterior && (
+            <Link href={`/contenido/${anterior.slug}`} className="group text-left">
+              <span className="label-tech block text-ink-faint">← Anterior</span>
+              <span className="mt-1 block max-w-[220px] truncate text-lg font-semibold tracking-tight text-ink transition-colors group-hover:text-cyan">
+                {anterior.title}
+              </span>
+            </Link>
+          )}
+
+          {siguiente && (
+            <Link href={`/contenido/${siguiente.slug}`} className="group text-right">
+              <span className="label-tech block text-ink-faint">Siguiente →</span>
+              <span className="mt-1 block max-w-[220px] truncate text-lg font-semibold tracking-tight text-ink transition-colors group-hover:text-cyan">
+                {siguiente.title}
+              </span>
+            </Link>
+          )}
+        </div>
       </div>
     </footer>
   );

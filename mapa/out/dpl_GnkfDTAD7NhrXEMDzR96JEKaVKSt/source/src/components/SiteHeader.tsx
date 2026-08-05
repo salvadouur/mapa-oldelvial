@@ -19,11 +19,6 @@ interface Props {
   contenidos?: number;
 }
 
-const NAV = [
-  { href: "/", clave: "traza", texto: "Traza" },
-  { href: "/serie", clave: "serie", texto: "Serie" },
-] as const;
-
 export default function SiteHeader({ activo, variante = "flotante", derecha, contenidos }: Props) {
   return (
     <header
@@ -52,29 +47,15 @@ export default function SiteHeader({ activo, variante = "flotante", derecha, con
           </span>
         </Link>
 
+        {/* "Traza" y "Serie" ya no conviven como nav: cada pantalla tiene un
+            único botón para saltar a la otra. En la home lleva a la serie;
+            en cualquier otro lado (serie, una ficha) vuelve a la traza, que
+            es el punto de partida del sitio. */}
         {derecha ??
           (activo === "traza" ? (
-            // En la home, "Ver la serie" reemplaza a la nav Traza/Serie:
-            // "Traza" es redundante si ya estás ahí, y "Serie" queda cubierto
-            // por este mismo botón.
-            <VerLaSerie />
+            <VerBoton href="/serie" texto="Ver la serie" />
           ) : (
-            <nav className="flex items-center gap-1">
-              {NAV.map((n) => (
-                <Link
-                  key={n.href}
-                  href={n.href}
-                  aria-current={activo === n.clave ? "page" : undefined}
-                  className={`label-tech rounded px-3 py-2 transition-colors ${
-                    activo === n.clave
-                      ? "text-cyan"
-                      : "text-ink-faint hover:bg-white/5 hover:text-ink-soft"
-                  }`}
-                >
-                  {n.texto}
-                </Link>
-              ))}
-            </nav>
+            <VerBoton href="/" texto="Ver traza" />
           ))}
       </div>
 
@@ -83,16 +64,16 @@ export default function SiteHeader({ activo, variante = "flotante", derecha, con
   );
 }
 
-function VerLaSerie() {
+function VerBoton({ href, texto }: { href: string; texto: string }) {
   return (
     <Link
-      href="/serie"
+      href={href}
       className="label-tech flex shrink-0 items-center gap-2 rounded-full border border-cyan/30 bg-cyan/10 px-3.5 py-1.5 text-cyan transition-colors hover:bg-cyan/20"
     >
       <svg viewBox="0 0 16 16" className="h-3 w-3 fill-current">
         <path d="M4 2.5v11l9.5-5.5z" />
       </svg>
-      Ver la serie
+      {texto}
     </Link>
   );
 }

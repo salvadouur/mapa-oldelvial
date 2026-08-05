@@ -51,7 +51,7 @@ export default function ContentRail({ rail, destacarPrimero = false, accion }: P
 
   return (
     <section className="group/rail relative">
-      <header className="mb-3 flex items-end justify-between gap-4 px-4 md:px-8">
+      <header className="mb-3 flex items-end justify-between gap-4 px-5 md:px-8">
         <h2 className="text-[15px] font-semibold tracking-tight text-ink md:text-base">
           {rail.title}
         </h2>
@@ -69,7 +69,7 @@ export default function ContentRail({ rail, destacarPrimero = false, accion }: P
         <div
           ref={pista}
           onScroll={revisarLimites}
-          className="no-scrollbar flex snap-x snap-mandatory gap-3.5 overflow-x-auto scroll-smooth px-4 pt-1 pb-3 md:gap-4 md:px-8"
+          className="no-scrollbar flex snap-x snap-mandatory gap-3.5 overflow-x-auto scroll-smooth px-5 pt-1 pb-3 md:gap-4 md:px-8"
         >
           {rail.items.map((c, i) => (
             <div key={c.id} className="snap-start">
