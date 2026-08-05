@@ -25,11 +25,26 @@ export default function ContentRail({ rail, destacarPrimero = false, accion }: P
   const [puedeIzq, setPuedeIzq] = useState(false);
   const [puedeDer, setPuedeDer] = useState(false);
 
+  /**
+   * Si la primera/última tarjeta quedan fuera del área visible, en vez de
+   * comparar `scrollLeft` contra un umbral en píxeles. Con scroll-snap el
+   * reposo al volver al principio no siempre cae en `scrollLeft === 0` —en
+   * los tests quedó en 32px—, así que un umbral chico como el que había antes
+   * (8px) dejaba la flecha izquierda prendida aunque no hubiera nada más para
+   * el costado. El margen acá es para el redondeo del snap, no para tapar
+   * scroll real: una tarjeta mide 200px o más, así que 40px nunca esconde un
+   * desplazamiento genuino.
+   */
   const revisarLimites = useCallback(() => {
     const el = pista.current;
-    if (!el) return;
-    setPuedeIzq(el.scrollLeft > 8);
-    setPuedeDer(el.scrollLeft + el.clientWidth < el.scrollWidth - 8);
+    const primero = el?.firstElementChild as HTMLElement | null;
+    const ultimo = el?.lastElementChild as HTMLElement | null;
+    if (!el || !primero || !ultimo) return;
+
+    const margen = 40;
+    const rectPista = el.getBoundingClientRect();
+    setPuedeIzq(primero.getBoundingClientRect().left < rectPista.left - margen);
+    setPuedeDer(ultimo.getBoundingClientRect().right > rectPista.right + margen);
   }, []);
 
   useEffect(() => {
@@ -51,7 +66,7 @@ export default function ContentRail({ rail, destacarPrimero = false, accion }: P
 
   return (
     <section className="group/rail relative">
-      <header className="mb-3 flex items-end justify-between gap-4 px-5 md:px-8">
+      <header className="mb-3 flex items-end justify-between gap-4 px-6 md:px-8">
         <h2 className="text-[15px] font-semibold tracking-tight text-ink md:text-base">
           {rail.title}
         </h2>
@@ -69,7 +84,7 @@ export default function ContentRail({ rail, destacarPrimero = false, accion }: P
         <div
           ref={pista}
           onScroll={revisarLimites}
-          className="no-scrollbar flex snap-x snap-mandatory gap-3.5 overflow-x-auto scroll-smooth px-5 pt-1 pb-3 md:gap-4 md:px-8"
+          className="no-scrollbar flex snap-x snap-mandatory gap-3.5 overflow-x-auto scroll-smooth px-6 pt-1 pb-3 md:gap-4 md:px-8"
         >
           {rail.items.map((c, i) => (
             <div key={c.id} className="snap-start">
