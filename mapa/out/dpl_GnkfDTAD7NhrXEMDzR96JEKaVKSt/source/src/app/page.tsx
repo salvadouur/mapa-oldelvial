@@ -21,7 +21,7 @@ export default async function Home() {
     <div className="relative h-dvh overflow-hidden">
       <MapaCliente contenidos={especiales} traza={traza} />
       <SiteHeader activo="traza" contenidos={especiales.length} />
-      <ContentDrawer rails={rails} />
+      <ContentDrawer rails={rails} especiales={especiales} />
     </div>
   );
 }

@@ -1,25 +1,33 @@
 import Link from "next/link";
 import Cover from "@/components/Cover";
 import { formatDuracion, formatFecha } from "@/lib/format";
+import { especialRelacionado } from "@/lib/content/sugerencias";
 import type { Content } from "@/lib/types";
 
 interface Props {
   contenido: Content;
+  /** Para resolver a qué especial lleva la tarjeta si `contenido` es un simple. */
+  especiales: Content[];
   /** Destaca la primera tarjeta de la fila de novedades. */
   destacado?: boolean;
 }
 
 /**
- * Ruta de consumo: la misma ficha que usan los especiales del mapa, para
- * simples y especiales por igual. La playlist de scroll infinito sigue
- * existiendo en `/serie`, pero ya no es a donde llevan las tarjetas del
- * carrusel de la home.
+ * Ruta de consumo: un simple lleva al especial que cuenta esa misma etapa en
+ * detalle —el mismo puente que ya usa "Especial en el mapa" en `/serie`—, no
+ * a una ficha propia armada con lo poco que tiene un simple (video + resumen
+ * de una línea). Si todavía no hay un especial cargado para esa etapa, cae a
+ * su propia ficha en vez de rendir un link roto.
  */
-export function hrefDeContenido(c: Content): string {
+export function hrefDeContenido(c: Content, especiales: Content[]): string {
+  if (c.type === "simple") {
+    const relacionado = especialRelacionado(c, especiales);
+    if (relacionado) return `/contenido/${relacionado.slug}`;
+  }
   return `/contenido/${c.slug}`;
 }
 
-export default function ContentCard({ contenido, destacado = false }: Props) {
+export default function ContentCard({ contenido, especiales, destacado = false }: Props) {
   // Sin título: la miniatura ya lleva el nombre quemado en el primer frame, así
   // que repetirlo debajo era redundante. Queda la sinopsis, que es lo que la
   // portada no cuenta, más la ficha técnica.
@@ -32,7 +40,7 @@ export default function ContentCard({ contenido, destacado = false }: Props) {
 
   return (
     <Link
-      href={hrefDeContenido(contenido)}
+      href={hrefDeContenido(contenido, especiales)}
       className="group panel relative flex shrink-0 flex-col overflow-hidden transition-[transform,border-color] duration-300 outline-none hover:-translate-y-1 hover:border-cyan/45 focus-visible:border-cyan focus-visible:ring-2 focus-visible:ring-cyan/40"
       // Todas del mismo tamaño: lo que distingue a la primera es la chapa
       // "Nuevo", no el ancho. Una tarjeta más grande estiraba la fila entera y

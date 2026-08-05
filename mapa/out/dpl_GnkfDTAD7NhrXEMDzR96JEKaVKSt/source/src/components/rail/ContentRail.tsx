@@ -2,11 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import type { Rail } from "@/lib/types";
+import type { Content, Rail } from "@/lib/types";
 import ContentCard from "./ContentCard";
 
 interface Props {
   rail: Rail;
+  /** Para resolver a qué especial lleva cada tarjeta, si es un simple. */
+  especiales: Content[];
   /** Marca como "nuevo" el primer ítem (se usa en la fila de novedades). */
   destacarPrimero?: boolean;
   /** Enlace opcional al final de la fila (ej. "ver la serie completa"). */
@@ -20,7 +22,7 @@ interface Props {
  * flechas en desktop. Las flechas se ocultan cuando no hay a dónde ir, para no
  * ofrecer un control muerto.
  */
-export default function ContentRail({ rail, destacarPrimero = false, accion }: Props) {
+export default function ContentRail({ rail, especiales, destacarPrimero = false, accion }: Props) {
   const pista = useRef<HTMLDivElement>(null);
   const [puedeIzq, setPuedeIzq] = useState(false);
   const [puedeDer, setPuedeDer] = useState(false);
@@ -88,7 +90,11 @@ export default function ContentRail({ rail, destacarPrimero = false, accion }: P
         >
           {rail.items.map((c, i) => (
             <div key={c.id} className="snap-start">
-              <ContentCard contenido={c} destacado={destacarPrimero && i === 0} />
+              <ContentCard
+                contenido={c}
+                especiales={especiales}
+                destacado={destacarPrimero && i === 0}
+              />
             </div>
           ))}
         </div>

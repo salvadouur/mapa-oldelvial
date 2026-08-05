@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import type { Rail } from "@/lib/types";
+import type { Content, Rail } from "@/lib/types";
 import { ALTO_CAJON_MAX, ALTO_CAJON_RELATIVO } from "./medidas";
 import ContentRail from "./ContentRail";
 
 interface Props {
   rails: Rail[];
+  /** Para resolver a qué especial lleva cada tarjeta, si es un simple. */
+  especiales: Content[];
 }
 
 /**
@@ -17,7 +19,7 @@ interface Props {
  * fila; expandido despliega el resto con scroll propio. Así ninguno de los dos
  * gestos —zoom y navegación de contenidos— le roba el scroll al otro.
  */
-export default function ContentDrawer({ rails }: Props) {
+export default function ContentDrawer({ rails, especiales }: Props) {
   const [expandido, setExpandido] = useState(false);
 
   if (rails.length === 0) return null;
@@ -66,8 +68,9 @@ export default function ContentDrawer({ rails }: Props) {
       </div>
 
       <div className="no-scrollbar relative flex-1 space-y-6 overflow-y-auto pb-5">
-        <ContentRail rail={primera} destacarPrimero />
-        {expandido && resto.map((r) => <ContentRail key={r.id} rail={r} />)}
+        <ContentRail rail={primera} especiales={especiales} destacarPrimero />
+        {expandido &&
+          resto.map((r) => <ContentRail key={r.id} rail={r} especiales={especiales} />)}
       </div>
     </div>
   );
