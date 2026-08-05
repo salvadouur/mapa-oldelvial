@@ -391,15 +391,21 @@ export default function TrazaMap({ contenidos, traza, paddingInferior }: Props) 
       )}
 
       {/* Las cifras de la obra viven en el header (fuera de este componente).
-          Los controles del propio mapa van abajo a la derecha, justo arriba
-          del cajón de contenidos —que igual puede taparlos al expandirse,
-          pero ahí ya no hace falta verlos. */}
+          Los controles del propio mapa van justo arriba del cajón de
+          contenidos, uno en cada esquina —que igual puede taparlos al
+          expandirse, pero ahí ya no hace falta verlos. */}
       <div
-        className="absolute right-3 z-20 flex flex-col items-end gap-2 md:right-6"
+        className="absolute left-3 z-20 md:left-6"
+        style={{ bottom: `calc(min(${ALTO_CAJON_RELATIVO * 100}dvh, ${ALTO_CAJON_MAX}px) + 18px)` }}
+      >
+        <BotonCentrarMapa onClick={encuadrar} />
+      </div>
+
+      <div
+        className="absolute right-3 z-20 md:right-6"
         style={{ bottom: `calc(min(${ALTO_CAJON_RELATIVO * 100}dvh, ${ALTO_CAJON_MAX}px) + 18px)` }}
       >
         <Referencias />
-        <BotonCentrarMapa onClick={encuadrar} />
       </div>
 
       <LlamadaAlMapa contenidos={contenidos.length} visible={!huboInteraccion && !activo} />
@@ -482,16 +488,39 @@ function Referencias() {
   const [creditos, setCreditos] = useState(false);
 
   return (
-    <div className="flex flex-col items-end gap-2">
-      {creditos && (
-        <p className="panel label-tech max-w-[210px] px-3 py-2 text-[9px] leading-relaxed text-ink-soft">
-          {ATRIBUCION.satelite}
-        </p>
-      )}
+    <div className="relative flex flex-col items-end gap-2 lg:block">
+      <div className="panel hidden px-4 py-3 lg:block">
+        <p className="label-tech mb-2.5 text-ink-faint">Referencias</p>
+        <ul className="space-y-1.5">
+          <li className="flex items-center gap-2.5">
+            <span className="h-px w-6 bg-[#7fe3ff]" />
+            <span className="label-tech text-[10px] text-ink-soft">
+              Traza Programa Duplicar Norte
+            </span>
+          </li>
+          <li className="flex items-center gap-2.5">
+            <span className="ml-2 block h-2 w-2 rotate-45 border border-cyan/80 bg-abyss" />
+            <span className="label-tech text-[10px] text-ink-soft">Estación de bombeo</span>
+          </li>
+          <li className="flex items-center gap-2.5">
+            <span className="ml-1.5 block h-3 w-3 rounded-full border border-cyan bg-cyan/60" />
+            <span className="label-tech text-[10px] text-ink-soft">Contenido especial</span>
+          </li>
+        </ul>
+      </div>
 
-      {/* Los créditos van a la izquierda de la caja, alineados con su última
-          línea ("Contenido especial") en vez de apilados debajo. */}
-      <div className="flex items-end gap-2">
+      {/* En desktop el botón de créditos flota arriba a la derecha de la
+          caja; el texto de atribución, si está abierto, se agrega antes en
+          el DOM y por eso aparece a su izquierda (el bloque solo tiene fijo
+          el borde derecho, así que crece hacia la izquierda). En mobile no
+          hay caja a la cual anclarse: este bloque queda en flujo normal,
+          como un control suelto de nuevo. */}
+      <div className="static flex items-center gap-2 lg:absolute lg:-top-9 lg:right-0">
+        {creditos && (
+          <p className="panel label-tech max-w-[210px] px-3 py-2 text-[9px] leading-relaxed text-ink-soft">
+            {ATRIBUCION.satelite}
+          </p>
+        )}
         <button
           type="button"
           onClick={() => setCreditos((v) => !v)}
@@ -504,26 +533,6 @@ function Referencias() {
         >
           i
         </button>
-
-        <div className="panel hidden px-4 py-3 lg:block">
-          <p className="label-tech mb-2.5 text-ink-faint">Referencias</p>
-          <ul className="space-y-1.5">
-            <li className="flex items-center gap-2.5">
-              <span className="h-px w-6 bg-[#7fe3ff]" />
-              <span className="label-tech text-[10px] text-ink-soft">
-                Traza Programa Duplicar Norte
-              </span>
-            </li>
-            <li className="flex items-center gap-2.5">
-              <span className="ml-2 block h-2 w-2 rotate-45 border border-cyan/80 bg-abyss" />
-              <span className="label-tech text-[10px] text-ink-soft">Estación de bombeo</span>
-            </li>
-            <li className="flex items-center gap-2.5">
-              <span className="ml-1.5 block h-3 w-3 rounded-full border border-cyan bg-cyan/60" />
-              <span className="label-tech text-[10px] text-ink-soft">Contenido especial</span>
-            </li>
-          </ul>
-        </div>
       </div>
     </div>
   );
