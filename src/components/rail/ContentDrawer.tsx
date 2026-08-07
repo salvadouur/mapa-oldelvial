@@ -1,0 +1,77 @@
+"use client";
+
+import { useState } from "react";
+import type { Content, Rail } from "@/lib/types";
+import { ALTO_CAJON_MAX, ALTO_CAJON_RELATIVO } from "./medidas";
+import ContentRail from "./ContentRail";
+
+interface Props {
+  rails: Rail[];
+  /** Para resolver a qué especial lleva cada tarjeta, si es un simple. */
+  especiales: Content[];
+}
+
+/**
+ * Cajón de contenidos sobre el mapa.
+ *
+ * La home no scrollea: el mapa se queda con la rueda del mouse para el zoom, y
+ * el catálogo vive en este cajón con dos estados. Contraído muestra la primera
+ * fila; expandido despliega el resto con scroll propio. Así ninguno de los dos
+ * gestos —zoom y navegación de contenidos— le roba el scroll al otro.
+ */
+export default function ContentDrawer({ rails, especiales }: Props) {
+  const [expandido, setExpandido] = useState(false);
+
+  if (rails.length === 0) return null;
+
+  const [primera, ...resto] = rails;
+  const hayMas = resto.length > 0;
+
+  return (
+    <div
+      className="absolute inset-x-0 bottom-0 z-20 flex flex-col transition-[max-height] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+      style={{
+        maxHeight:
+          expandido && hayMas
+            ? "80dvh"
+            : `min(${ALTO_CAJON_RELATIVO * 100}dvh, ${ALTO_CAJON_MAX}px)`,
+      }}
+    >
+      <div className="scrim-bottom pointer-events-none absolute inset-x-0 -top-24 bottom-0" />
+
+      <div className="relative flex items-center justify-between gap-4 px-4 pb-2 md:px-8">
+        {/* Con un solo carrusel no hay nada más que desplegar: el botón no
+            aporta, así que no se renderiza. */}
+        {hayMas ? (
+          <button
+            type="button"
+            onClick={() => setExpandido((v) => !v)}
+            aria-expanded={expandido}
+            className="group flex items-center gap-2 rounded-full border border-line bg-abyss/80 px-3.5 py-1.5 backdrop-blur transition-colors hover:border-cyan/50"
+          >
+            <svg
+              viewBox="0 0 16 16"
+              className={`h-3 w-3 text-cyan transition-transform duration-300 ${expandido ? "rotate-180" : ""}`}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+            >
+              <path d="M3 10l5-5 5 5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span className="label-tech text-ink-soft group-hover:text-ink">
+              {expandido ? "Contraer" : "Todo el contenido"}
+            </span>
+          </button>
+        ) : (
+          <span />
+        )}
+      </div>
+
+      <div className="no-scrollbar relative flex-1 space-y-6 overflow-y-auto pb-5">
+        <ContentRail rail={primera} especiales={especiales} destacarPrimero />
+        {expandido &&
+          resto.map((r) => <ContentRail key={r.id} rail={r} especiales={especiales} />)}
+      </div>
+    </div>
+  );
+}
