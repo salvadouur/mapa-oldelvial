@@ -1,18 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import "maplibre-gl/dist/maplibre-gl.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+/**
+ * Montserrat en toda la página, en tres pesos: Light para los titulares
+ * grandes, Regular para el texto corrido y Bold para lo que tiene que pesar.
+ * Las versalitas técnicas también son Montserrat: lo que les da el aire de
+ * instrumento es el tracking amplio, no el monoespaciado.
+ */
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const monoTech = JetBrains_Mono({
-  variable: "--font-mono-tech",
-  subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["300", "400", "700"],
   display: "swap",
 });
 
@@ -34,7 +34,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es-AR" className={`${inter.variable} ${monoTech.variable} h-full`}>
+    <html lang="es-AR" className={`${montserrat.variable} h-full`}>
       <body className="min-h-full antialiased">{children}</body>
     </html>
   );

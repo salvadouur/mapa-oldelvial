@@ -65,6 +65,7 @@ export async function guardarContenido(input: ContenidoInput): Promise<Resultado
     slug: c.slug,
     type: c.type,
     status: c.status,
+    locked: c.locked,
     title: c.title,
     subtitle: c.subtitle || null,
     summary: c.summary || null,

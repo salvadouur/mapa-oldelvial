@@ -15,7 +15,7 @@ export default async function ContenidosPage() {
     <main className="mx-auto max-w-6xl px-4 py-8 md:px-8">
       <header className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-ink">Contenidos</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-ink">Contenidos</h1>
           <p className="mt-1.5 text-[13px] text-ink-soft">
             {contenidos.length} en total · {especiales.length} especiales · {simples.length} simples
             {borradores > 0 && ` · ${borradores} sin publicar`}
@@ -64,7 +64,7 @@ function Grupo({
   return (
     <section>
       <header className="mb-3">
-        <h2 className="text-[15px] font-semibold tracking-tight text-ink">{titulo}</h2>
+        <h2 className="text-[15px] font-bold tracking-tight text-ink">{titulo}</h2>
         <p className="mt-0.5 text-[12.5px] text-ink-faint">{descripcion}</p>
       </header>
 

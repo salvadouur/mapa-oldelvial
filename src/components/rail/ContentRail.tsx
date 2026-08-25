@@ -2,17 +2,17 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import type { Content, Rail } from "@/lib/types";
+import type { Rail } from "@/lib/types";
 import ContentCard from "./ContentCard";
 
 interface Props {
   rail: Rail;
-  /** Para resolver a qué especial lleva cada tarjeta, si es un simple. */
-  especiales: Content[];
   /** Marca como "nuevo" el primer ítem (se usa en la fila de novedades). */
   destacarPrimero?: boolean;
   /** Enlace opcional al final de la fila (ej. "ver la serie completa"). */
   accion?: { href: string; texto: string };
+  /** Fila sin encabezado: las tarjetas arrancan directo. */
+  sinTitulo?: boolean;
 }
 
 /**
@@ -22,31 +22,21 @@ interface Props {
  * flechas en desktop. Las flechas se ocultan cuando no hay a dónde ir, para no
  * ofrecer un control muerto.
  */
-export default function ContentRail({ rail, especiales, destacarPrimero = false, accion }: Props) {
+export default function ContentRail({
+  rail,
+  destacarPrimero = false,
+  accion,
+  sinTitulo = false,
+}: Props) {
   const pista = useRef<HTMLDivElement>(null);
   const [puedeIzq, setPuedeIzq] = useState(false);
   const [puedeDer, setPuedeDer] = useState(false);
 
-  /**
-   * Si la primera/última tarjeta quedan fuera del área visible, en vez de
-   * comparar `scrollLeft` contra un umbral en píxeles. Con scroll-snap el
-   * reposo al volver al principio no siempre cae en `scrollLeft === 0` —en
-   * los tests quedó en 32px—, así que un umbral chico como el que había antes
-   * (8px) dejaba la flecha izquierda prendida aunque no hubiera nada más para
-   * el costado. El margen acá es para el redondeo del snap, no para tapar
-   * scroll real: una tarjeta mide 200px o más, así que 40px nunca esconde un
-   * desplazamiento genuino.
-   */
   const revisarLimites = useCallback(() => {
     const el = pista.current;
-    const primero = el?.firstElementChild as HTMLElement | null;
-    const ultimo = el?.lastElementChild as HTMLElement | null;
-    if (!el || !primero || !ultimo) return;
-
-    const margen = 40;
-    const rectPista = el.getBoundingClientRect();
-    setPuedeIzq(primero.getBoundingClientRect().left < rectPista.left - margen);
-    setPuedeDer(ultimo.getBoundingClientRect().right > rectPista.right + margen);
+    if (!el) return;
+    setPuedeIzq(el.scrollLeft > 8);
+    setPuedeDer(el.scrollLeft + el.clientWidth < el.scrollWidth - 8);
   }, []);
 
   useEffect(() => {
@@ -68,33 +58,31 @@ export default function ContentRail({ rail, especiales, destacarPrimero = false,
 
   return (
     <section className="group/rail relative">
-      <header className="mb-3 flex items-end justify-between gap-4 px-8 md:px-10">
-        <h2 className="text-[15px] font-semibold tracking-tight text-ink md:text-base">
-          {rail.title}
-        </h2>
-        {accion && (
-          <Link
-            href={accion.href}
-            className="label-tech shrink-0 text-ink-faint transition-colors hover:text-cyan"
-          >
-            {accion.texto} →
-          </Link>
-        )}
-      </header>
+      {!sinTitulo && (
+        <header className="mb-3 flex items-end justify-between gap-4 px-4 md:px-8">
+          <h2 className="text-[15px] font-bold tracking-tight text-ink md:text-base">
+            {rail.title}
+          </h2>
+          {accion && (
+            <Link
+              href={accion.href}
+              className="label-tech shrink-0 text-ink-faint transition-colors hover:text-cyan"
+            >
+              {accion.texto} →
+            </Link>
+          )}
+        </header>
+      )}
 
       <div className="relative">
         <div
           ref={pista}
           onScroll={revisarLimites}
-          className="no-scrollbar flex snap-x snap-mandatory gap-3.5 overflow-x-auto scroll-smooth px-8 pt-1 pb-3 md:gap-4 md:px-10"
+          className="no-scrollbar flex snap-x snap-mandatory gap-3.5 overflow-x-auto scroll-smooth px-4 pt-1 pb-3 md:gap-4 md:px-8"
         >
           {rail.items.map((c, i) => (
             <div key={c.id} className="snap-start">
-              <ContentCard
-                contenido={c}
-                especiales={especiales}
-                destacado={destacarPrimero && i === 0}
-              />
+              <ContentCard contenido={c} destacado={destacarPrimero && i === 0} />
             </div>
           ))}
         </div>

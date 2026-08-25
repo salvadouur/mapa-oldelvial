@@ -67,7 +67,8 @@ export const TRAZA_BOUNDS: [[number, number], [number, number]] = [
   [-67.1, -37.2],
 ];
 
-export const ZOOM_MIN = 4.2;
+// Alcanza para encuadrar la Argentina entera de una punta a la otra.
+export const ZOOM_MIN = 3.1;
 export const ZOOM_MAX = 14;
 
 /* ------------------------------------------------------------------ */

@@ -8,9 +8,12 @@
   --color-surface-2: #101e33;
   --color-line: #1c2c45;
 
-  /* Acentos */
-  --color-cyan: #4ecdf5;
-  --color-cyan-dim: #2b9dc4;
+  /* Acentos.
+     `cyan` es el celeste del programa: la traza y los contenidos especiales.
+     Los simples van en gris, para que no compitan con ellos. */
+  --color-cyan: #3e9dc7;
+  --color-cyan-dim: #2e7797;
+  --color-gris: #9aa9b8;
   --color-mint: #34d399;
   --color-amber: #f4a259;
 
@@ -21,8 +24,8 @@
   --color-ink-soft: #b3c4d8;
   --color-ink-faint: #8398b2;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-mono-tech), ui-monospace, monospace;
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
 
   --radius-card: 14px;
 }
@@ -46,11 +49,14 @@
 }
 
 @utility label-tech {
-  /* Etiqueta técnica: versalitas mono con tracking amplio */
-  font-family: var(--font-mono);
+  /* Etiqueta técnica: versalitas con tracking amplio. Sin monoespaciado —toda
+     la página es Montserrat—, así que el aire de instrumento lo dan el tracking
+     y las mayúsculas. */
+  font-family: var(--font-sans);
+  font-weight: 400;
   font-size: 0.6875rem;
   line-height: 1.2;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
@@ -58,6 +64,24 @@
   background: color-mix(in srgb, var(--color-surface) 82%, transparent);
   border: 1px solid var(--color-line);
   backdrop-filter: blur(14px);
+  border-radius: var(--radius-card);
+}
+
+/**
+ * Vidrio esmerilado: deja pasar el mapa por detrás en vez de taparlo.
+ * El borde claro es lo que le da el canto de vidrio; sin él se lee como un
+ * rectángulo translúcido y no como una superficie.
+ */
+@utility glass {
+  /* Negro al 20% y blur fuerte: el mapa se sigue viendo pasar por detrás,
+     pero difuminado lo suficiente como para que el blanco lea siempre. */
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(72px) saturate(1.7);
+  -webkit-backdrop-filter: blur(72px) saturate(1.7);
+  box-shadow:
+    0 10px 36px -14px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-card);
 }
 

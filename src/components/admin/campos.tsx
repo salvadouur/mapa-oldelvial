@@ -195,7 +195,7 @@ export function Seccion({
     <section className="panel p-5 md:p-6">
       <header className="mb-5 flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-[15px] font-semibold tracking-tight text-ink">{titulo}</h2>
+          <h2 className="text-[15px] font-bold tracking-tight text-ink">{titulo}</h2>
           {descripcion && (
             <p className="mt-1 text-[12.5px] leading-relaxed text-ink-soft">{descripcion}</p>
           )}

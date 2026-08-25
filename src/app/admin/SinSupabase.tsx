@@ -27,7 +27,7 @@ export default function SinSupabase() {
     <div className="grid min-h-dvh place-items-center bg-abyss px-6 py-16">
       <div className="w-full max-w-lg">
         <p className="label-tech text-cyan">Backoffice</p>
-        <h1 className="mt-3 text-2xl font-semibold tracking-tight text-ink">
+        <h1 className="mt-3 text-2xl font-bold tracking-tight text-ink">
           Falta conectar Supabase
         </h1>
         <p className="mt-3 text-[14px] leading-relaxed text-ink-soft">
@@ -42,7 +42,7 @@ export default function SinSupabase() {
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span>
-                <span className="block text-sm font-semibold text-ink">{paso.titulo}</span>
+                <span className="block text-sm font-bold text-ink">{paso.titulo}</span>
                 <span className="mt-1 block text-[12.5px] leading-relaxed text-ink-soft">
                   {paso.detalle}
                 </span>

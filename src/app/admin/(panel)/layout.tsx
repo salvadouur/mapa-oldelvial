@@ -17,7 +17,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-3 md:px-8">
           <div className="flex items-center gap-6">
             <Link href="/admin" className="leading-tight">
-              <span className="block text-[13px] font-semibold tracking-tight text-ink">
+              <span className="block text-[13px] font-bold tracking-tight text-ink">
                 Duplicar Norte
               </span>
               <span className="label-tech block text-[9px] text-cyan">Backoffice</span>
@@ -60,7 +60,7 @@ function NoHabilitado({ email }: { email?: string }) {
     <div className="grid min-h-dvh place-items-center px-6 py-16">
       <div className="max-w-md text-center">
         <p className="label-tech text-amber">Acceso no habilitado</p>
-        <h1 className="mt-3 text-2xl font-semibold tracking-tight text-ink">
+        <h1 className="mt-3 text-2xl font-bold tracking-tight text-ink">
           Tu usuario todavía no puede administrar el sitio
         </h1>
         <p className="mt-3 text-[14px] leading-relaxed text-ink-soft">

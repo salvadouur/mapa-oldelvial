@@ -42,7 +42,7 @@ export default function SelectorPunto({ lat, lng, onChange, error }: Props) {
 
     const m = new MapLibreMap({
       container: contenedor.current,
-      style: buildStyle("oscuro"),
+      style: buildStyle("tactico"),
       center: [-68.3, -38.35],
       zoom: 6.1,
       minZoom: ZOOM_MIN,

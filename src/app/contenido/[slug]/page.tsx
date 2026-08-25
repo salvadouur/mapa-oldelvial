@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import Cover from "@/components/Cover";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
-import { getContentBySlug, getEspeciales, getSimples } from "@/lib/content/repository";
+import { getContentBySlug, getEspeciales } from "@/lib/content/repository";
 import { formatDuracion, formatFecha } from "@/lib/format";
 import type { Block, Content } from "@/lib/types";
 
@@ -29,21 +29,17 @@ export default async function PublicacionPage(props: PageProps<"/contenido/[slug
   const contenido = await getContentBySlug(slug);
   if (!contenido) notFound();
 
-  // Anterior/siguiente navegan dentro del mismo tipo: un especial entre
-  // especiales, un simple entre simples —son dos recorridos distintos, mezclar
-  // "próximo" entre ambos no tendría un orden que tenga sentido para el
-  // usuario.
-  const lista = contenido.type === "especial" ? await getEspeciales() : await getSimples();
-  const indice = lista.findIndex((c) => c.slug === slug);
-  const hayMasDeUno = indice >= 0 && lista.length > 1;
-  const anterior = hayMasDeUno ? lista[(indice - 1 + lista.length) % lista.length] : null;
-  const siguiente = hayMasDeUno ? lista[(indice + 1) % lista.length] : null;
+  const especiales = await getEspeciales();
+  const indice = especiales.findIndex((c) => c.slug === slug);
+  const siguiente = indice >= 0 ? especiales[(indice + 1) % especiales.length] : null;
 
-  const { destacado, resto } = separarDestacado(bloquesEfectivos(contenido));
+  const { destacado, resto } = separarDestacado(contenido.blocks);
 
   return (
     <div className="min-h-dvh bg-abyss">
-      <SiteHeader variante="solido" />
+      {/* La ficha de un especial es parte del modo Serie: el conmutador queda
+          en SERIE y deja TRAZA a un clic para volver al mapa. */}
+      <SiteHeader variante="solido" activo="serie" />
 
       <Hero contenido={contenido} />
 
@@ -67,7 +63,7 @@ export default async function PublicacionPage(props: PageProps<"/contenido/[slug
         ))}
       </main>
 
-      <PieDePublicacion anterior={anterior} siguiente={siguiente} />
+      <PieDePublicacion siguiente={siguiente} />
     </div>
   );
 }
@@ -95,19 +91,17 @@ function Hero({ contenido }: { contenido: Content }) {
         <div className="mb-4 flex items-center gap-3">
           <span className="h-px w-8 bg-cyan" />
           <span className="label-tech text-cyan">
-            {contenido.locationName ?? "Traza"} · {contenido.type === "especial" ? "Especial" : "Serie"}
+            {contenido.locationName ?? "Traza"} · Especial
           </span>
         </div>
 
-        <h1 className="max-w-3xl text-4xl leading-[1.05] font-semibold tracking-tight text-balance text-ink md:text-6xl">
+        <h1 className="max-w-3xl text-4xl leading-[1.05] font-bold tracking-tight text-balance text-ink md:text-6xl">
           {contenido.title}
         </h1>
 
-        {/* Los simples no tienen subtítulo propio: usan el resumen, que para
-            ellos hace las veces de bajada. */}
-        {(contenido.subtitle ?? contenido.summary) && (
+        {contenido.subtitle && (
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-soft md:text-xl">
-            {contenido.subtitle ?? contenido.summary}
+            {contenido.subtitle}
           </p>
         )}
 
@@ -128,13 +122,7 @@ function Hero({ contenido }: { contenido: Content }) {
   );
 }
 
-function PieDePublicacion({
-  anterior,
-  siguiente,
-}: {
-  anterior: Content | null;
-  siguiente: Content | null;
-}) {
+function PieDePublicacion({ siguiente }: { siguiente: Content | null }) {
   return (
     <footer className="border-t border-line">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 md:flex-row md:items-center md:justify-between md:px-8">
@@ -145,53 +133,17 @@ function PieDePublicacion({
           ← Volver a la traza
         </Link>
 
-        <div className="flex items-center gap-8">
-          {anterior && (
-            <Link href={`/contenido/${anterior.slug}`} className="group text-left">
-              <span className="label-tech block text-ink-faint">← Anterior</span>
-              <span className="mt-1 block max-w-[220px] truncate text-lg font-semibold tracking-tight text-ink transition-colors group-hover:text-cyan">
-                {anterior.title}
-              </span>
-            </Link>
-          )}
-
-          {siguiente && (
-            <Link href={`/contenido/${siguiente.slug}`} className="group text-right">
-              <span className="label-tech block text-ink-faint">Siguiente →</span>
-              <span className="mt-1 block max-w-[220px] truncate text-lg font-semibold tracking-tight text-ink transition-colors group-hover:text-cyan">
-                {siguiente.title}
-              </span>
-            </Link>
-          )}
-        </div>
+        {siguiente && (
+          <Link href={`/contenido/${siguiente.slug}`} className="group text-right">
+            <span className="label-tech block text-ink-faint">Próximo especial</span>
+            <span className="mt-1 block text-lg font-bold tracking-tight text-ink transition-colors group-hover:text-cyan">
+              {siguiente.title} →
+            </span>
+          </Link>
+        )}
       </div>
     </footer>
   );
-}
-
-/**
- * Los simples no tienen bloques propios —viven del video + resumen de nivel
- * superior, pensados para el carrusel y `/serie`—, así que al abrirlos con el
- * mismo formato de ficha que un especial no habría nada que mostrar debajo
- * del hero. Se arma un video + texto de arranque a partir de esos campos,
- * igual que si fueran los dos primeros bloques de un especial.
- */
-function bloquesEfectivos(contenido: Content): Block[] {
-  if (contenido.blocks.length > 0) return contenido.blocks;
-  if (!contenido.vimeoId) return [];
-
-  const bloques: Block[] = [
-    { id: "video-principal", position: 0, type: "video", data: { vimeoId: contenido.vimeoId } },
-  ];
-  if (contenido.summary) {
-    bloques.push({
-      id: "texto-principal",
-      position: 1,
-      type: "text",
-      data: { body: contenido.summary },
-    });
-  }
-  return bloques;
 }
 
 /**

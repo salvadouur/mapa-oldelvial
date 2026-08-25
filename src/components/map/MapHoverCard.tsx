@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Cover from "@/components/Cover";
-import { formatDuracion } from "@/lib/format";
+import { hrefDeContenido } from "@/components/rail/ContentCard";
 import type { MappedContent } from "@/lib/types";
 
 interface Props {
@@ -12,23 +12,17 @@ interface Props {
   y: number;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
-  onCerrar: () => void;
 }
 
 const ANCHO = 284;
 
 /**
- * Ficha flotante que aparece al posar el mouse sobre un punto de la traza.
- * Se ancla al punto y se voltea sola cuando quedaría fuera del viewport.
+ * Ficha que asoma al posar el mouse sobre un punto de la traza.
+ *
+ * Sin botones: la tarjeta entera es el enlace. Se ancla al punto y se voltea
+ * sola cuando quedaría fuera del viewport.
  */
-export default function MapHoverCard({
-  contenido,
-  x,
-  y,
-  onMouseEnter,
-  onMouseLeave,
-  onCerrar,
-}: Props) {
+export default function MapHoverCard({ contenido, x, y, onMouseEnter, onMouseLeave }: Props) {
   const ancho = typeof window !== "undefined" ? window.innerWidth : 1280;
   const alto = typeof window !== "undefined" ? window.innerHeight : 800;
 
@@ -41,57 +35,56 @@ export default function MapHoverCard({
   const top = debajo ? y + 22 : undefined;
   const bottom = debajo ? undefined : alto - y + 22;
 
+  const esEspecial = contenido.type === "especial";
+  const bloqueado = contenido.locked;
+
+  const cuerpo = (
+    <>
+      <div className="relative aspect-video">
+        <Cover
+          slug={contenido.slug}
+          url={contenido.coverUrl}
+          alt={contenido.title}
+          className={bloqueado ? "grayscale" : ""}
+          etiqueta={contenido.locationName}
+        />
+        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-abyss/95 to-transparent" />
+        {contenido.kp && !bloqueado && (
+          <span className="label-tech absolute top-2.5 left-2.5 rounded bg-abyss/80 px-2 py-1 text-[9px] text-cyan">
+            {contenido.kp}
+          </span>
+        )}
+      </div>
+
+      <div className="space-y-1.5 p-3.5">
+        <p className={`label-tech ${bloqueado ? "text-ink-faint" : esEspecial ? "text-cyan" : "text-gris"}`}>
+          {bloqueado ? "Próximamente" : esEspecial ? "Especial" : "Serie"}
+        </p>
+        <h3 className="text-[15px] leading-snug font-bold text-ink">{contenido.title}</h3>
+        {contenido.summary && (
+          <p className="line-clamp-3 text-[12.5px] leading-relaxed font-normal text-ink-soft">
+            {contenido.summary}
+          </p>
+        )}
+      </div>
+    </>
+  );
+
   return (
     <div
-      className="pointer-events-auto absolute z-30 aparece"
+      className="aparece pointer-events-auto absolute z-30"
       style={{ left, top, bottom, width: ANCHO }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <div className="panel overflow-hidden shadow-[0_24px_60px_-20px_rgba(0,0,0,0.9)]">
-        <Link href={`/contenido/${contenido.slug}`} className="block">
-          <div className="relative aspect-video">
-            <Cover
-              slug={contenido.slug}
-              url={contenido.coverUrl}
-              alt={contenido.title}
-              etiqueta={contenido.locationName}
-            />
-            <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-abyss/95 to-transparent" />
-            {contenido.kp && (
-              <span className="label-tech absolute top-2.5 left-2.5 rounded bg-abyss/80 px-2 py-1 text-[9px] text-cyan">
-                {contenido.kp}
-              </span>
-            )}
-          </div>
-
-          <div className="space-y-1.5 p-3.5">
-            <p className="label-tech text-cyan">
-              Especial
-              {contenido.durationSeconds ? ` · ${formatDuracion(contenido.durationSeconds)}` : ""}
-            </p>
-            <h3 className="text-[15px] leading-snug font-semibold text-ink">{contenido.title}</h3>
-            {contenido.summary && (
-              <p className="line-clamp-3 text-[12.5px] leading-relaxed text-ink-soft">
-                {contenido.summary}
-              </p>
-            )}
-          </div>
-        </Link>
-
-        {/* En touch no hay hover: hace falta un botón explícito. */}
-        <div className="flex items-center justify-between border-t border-line px-3.5 py-2 lg:hidden">
-          <button
-            type="button"
-            onClick={onCerrar}
-            className="label-tech text-ink-faint transition-colors hover:text-ink-soft"
-          >
-            Cerrar
-          </button>
-          <Link href={`/contenido/${contenido.slug}`} className="label-tech text-cyan">
-            Ver especial →
+      <div className="glass overflow-hidden">
+        {bloqueado ? (
+          <div className="opacity-80">{cuerpo}</div>
+        ) : (
+          <Link href={hrefDeContenido(contenido)} className="block">
+            {cuerpo}
           </Link>
-        </div>
+        )}
       </div>
     </div>
   );

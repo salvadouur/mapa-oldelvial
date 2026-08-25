@@ -8,7 +8,7 @@ import { guardarContenido, borrarContenido } from "@/app/admin/actions";
 import type { BloqueInput, ContenidoInput } from "@/lib/content/schema";
 import { slugify } from "@/lib/format";
 import type { Content } from "@/lib/types";
-import { Area, Boton, Campo, Seccion, Selector } from "./campos";
+import { Area, Boton, Campo, Interruptor, Seccion, Selector } from "./campos";
 import BlockEditor from "./BlockEditor";
 import SubirImagen from "./SubirImagen";
 
@@ -28,6 +28,7 @@ function aFormulario(c: Content | null): ContenidoInput {
       slug: "",
       type: "especial",
       status: "draft",
+      locked: false,
       title: "",
       subtitle: "",
       summary: "",
@@ -50,6 +51,7 @@ function aFormulario(c: Content | null): ContenidoInput {
     slug: c.slug,
     type: c.type,
     status: c.status,
+    locked: c.locked,
     title: c.title,
     subtitle: c.subtitle ?? "",
     summary: c.summary ?? "",
@@ -130,7 +132,7 @@ export default function ContentEditor({ contenido }: Props) {
           <Link href="/admin" className="label-tech text-ink-faint transition-colors hover:text-cyan">
             ← Contenidos
           </Link>
-          <h1 className="mt-2 text-2xl font-semibold tracking-tight text-ink">
+          <h1 className="mt-2 text-2xl font-bold tracking-tight text-ink">
             {esNuevo ? "Nuevo contenido" : form.title || "Sin título"}
           </h1>
         </div>
@@ -211,6 +213,13 @@ export default function ContentEditor({ contenido }: Props) {
             ]}
           />
         </div>
+
+        <Interruptor
+          etiqueta="Próximamente"
+          descripcion="Se muestra en blanco y negro y no se puede reproducir. Sirve para anticipar lo que viene."
+          value={form.locked}
+          onChange={(v) => set("locked", v)}
+        />
       </Seccion>
 
       <Seccion titulo="Ficha" descripcion="Lo que se lee en el mapa y en el carrusel.">

@@ -53,7 +53,7 @@ export async function esAdmin(): Promise<boolean> {
 }
 
 const SELECT_COMPLETO =
-  "id, slug, type, status, title, subtitle, summary, cover_url, vimeo_id, duration_seconds, location_name, kp, lat, lng, tags, order_index, published_at, content_blocks (id, type, position, data)";
+  "id, slug, type, status, locked, title, subtitle, summary, cover_url, vimeo_id, duration_seconds, location_name, kp, lat, lng, tags, order_index, published_at, content_blocks (id, type, position, data)";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function aContenido(row: any): Content {
@@ -62,6 +62,7 @@ function aContenido(row: any): Content {
     slug: row.slug,
     type: row.type,
     status: row.status,
+    locked: row.locked ?? false,
     title: row.title,
     subtitle: row.subtitle,
     summary: row.summary,

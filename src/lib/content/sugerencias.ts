@@ -26,5 +26,10 @@ export function especialRelacionado(actual: Content, especiales: Content[]): Con
     .filter((x) => x.p > 0)
     .sort((a, b) => b.p - a.p)[0];
 
-  return mejor?.e ?? null;
+  if (mejor) return mejor.e;
+
+  // Sin afinidad clara, se sugiere igual: la sugerencia rota con el orden del
+  // simple, así no todos los videos empujan al mismo especial.
+  if (especiales.length === 0) return null;
+  return especiales[Math.abs(actual.orderIndex) % especiales.length];
 }

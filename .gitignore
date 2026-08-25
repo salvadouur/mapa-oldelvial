@@ -3,3 +3,6 @@ node_modules/
 *.tsbuildinfo
 .env*.local
 supabase/.temp/
+
+.vercel
+.env*

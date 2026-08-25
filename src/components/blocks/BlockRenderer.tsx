@@ -98,7 +98,7 @@ function BloqueTexto({ data }: { data: { heading?: string; body: string } }) {
   return (
     <div className="space-y-4">
       {data.heading && (
-        <h2 className="text-2xl leading-tight font-semibold tracking-tight text-balance text-ink md:text-3xl">
+        <h2 className="text-2xl leading-tight font-bold tracking-tight text-balance text-ink md:text-3xl">
           {data.heading}
         </h2>
       )}
@@ -121,7 +121,7 @@ function BloqueTexto({ data }: { data: { heading?: string; body: string } }) {
 function resaltarNegritas(texto: string): React.ReactNode[] {
   return texto.split(/(\*\*[^*]+\*\*)/g).map((parte, i) =>
     parte.startsWith("**") && parte.endsWith("**") ? (
-      <strong key={i} className="font-semibold text-ink">
+      <strong key={i} className="font-bold text-ink">
         {parte.slice(2, -2)}
       </strong>
     ) : (
@@ -137,7 +137,7 @@ function BloqueCifras({ items }: { items: { label: string; value: string; unit?:
         <div key={item.label} className="bg-surface px-5 py-5">
           <dt className="label-tech mb-2 text-ink-faint">{item.label}</dt>
           <dd className="flex items-baseline gap-1">
-            <span className="text-3xl leading-none font-semibold tracking-tight text-cyan md:text-4xl">
+            <span className="text-3xl leading-none font-bold tracking-tight text-cyan md:text-4xl">
               {item.value}
             </span>
             {item.unit && <span className="label-tech text-ink-soft">{item.unit}</span>}
@@ -158,13 +158,13 @@ function BloquePasos({
   return (
     <div className="space-y-4">
       {heading && (
-        <h2 className="text-xl font-semibold tracking-tight text-ink md:text-2xl">{heading}</h2>
+        <h2 className="text-xl font-bold tracking-tight text-ink md:text-2xl">{heading}</h2>
       )}
       <ol className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-5">
         {items.map((paso, i) => (
           <li key={paso.title} className="panel flex flex-col gap-1.5 p-4">
             <span className="label-tech text-cyan">{String(i + 1).padStart(2, "0")}</span>
-            <h3 className="text-sm font-semibold text-ink">{paso.title}</h3>
+            <h3 className="text-sm font-bold text-ink">{paso.title}</h3>
             <p className="text-[12.5px] leading-relaxed text-ink-soft">{paso.body}</p>
           </li>
         ))}

@@ -93,6 +93,7 @@ export const contenidoSchema = z
       .regex(/^[a-z0-9-]+$/, "Solo minúsculas, números y guiones"),
     type: z.enum(["especial", "simple"]),
     status: z.enum(["draft", "published"]),
+    locked: z.boolean(),
     title: z.string().min(1, "Falta el título"),
     subtitle: z.string().nullish(),
     summary: z.string().max(400, "El resumen se lee en el mapa: máximo 400 caracteres").nullish(),

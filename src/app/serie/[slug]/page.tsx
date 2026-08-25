@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
-import SerieFeed from "@/components/serie/SerieFeed";
+import SeriePlayer from "@/components/serie/SeriePlayer";
 import { getEspeciales, getSimples } from "@/lib/content/repository";
 
 export async function generateMetadata(props: PageProps<"/serie/[slug]">): Promise<Metadata> {
@@ -25,7 +25,7 @@ export default async function SerieItemPage(props: PageProps<"/serie/[slug]">) {
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-abyss">
       <SiteHeader activo="serie" variante="solido" />
-      <SerieFeed simples={simples} especiales={especiales} slugInicial={slug} />
+      <SeriePlayer simples={simples} especiales={especiales} slugInicial={slug} />
     </div>
   );
 }

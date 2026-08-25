@@ -31,6 +31,7 @@ const VIDEO = {
   topografia: "1212437523/51a369fbc8",
   geodeteccion: "1211886800/87476bc641",
   dobleJunta: "1211839891/6854d7fd48",
+  cruceRuta151: "1215543702/658edd0573",
   avancesDeObra: "1182076624/6b9cc4eb7b",
 } as const;
 
@@ -63,6 +64,7 @@ function complejo(d: DatosComplejo): Content {
     slug: d.slug,
     type: "especial",
     status: "published",
+    locked: false,
     title: d.title,
     subtitle: d.subtitle ?? null,
     summary: d.summary,
@@ -367,6 +369,8 @@ const CORTOS: {
   summary: string;
   vimeoId: string;
   locationName: string;
+  /** Punto propio, disperso a un costado de la traza. */
+  punto: [number, number];
 }[] = [
   {
     slug: "topografia",
@@ -374,6 +378,7 @@ const CORTOS: {
     summary: "El replanteo que baja el proyecto al terreno: eje, ancho de pista y progresivas.",
     vimeoId: VIDEO.topografia,
     locationName: "Tramo norte",
+    punto: [-68.72, -37.68],
   },
   {
     slug: "geodeteccion",
@@ -381,6 +386,7 @@ const CORTOS: {
     summary: "Buscar lo que ya está enterrado antes de abrir la zanja.",
     vimeoId: VIDEO.geodeteccion,
     locationName: "Tramo norte",
+    punto: [-68.55, -37.94],
   },
   {
     slug: "zanjeo",
@@ -388,6 +394,7 @@ const CORTOS: {
     summary: "Profundidad, talud y por qué el suelo manda sobre el plan de avance.",
     vimeoId: VIDEO.zanjeo,
     locationName: "Crucero Catriel",
+    punto: [-68.2, -37.78],
   },
   {
     slug: "acopio",
@@ -395,6 +402,7 @@ const CORTOS: {
     summary: "Recepción, clasificación y guarda del tubo antes de que salga a pista.",
     vimeoId: VIDEO.acopio,
     locationName: "Acopio 1",
+    punto: [-68.08, -38.04],
   },
   {
     slug: "planta-de-doble-junta",
@@ -402,6 +410,7 @@ const CORTOS: {
     summary: "Dos tubos de 12 metros se convierten en uno de 24, con arco sumergido.",
     vimeoId: VIDEO.dobleJunta,
     locationName: "Acopio 1",
+    punto: [-67.98, -37.81],
   },
   {
     slug: "curvado",
@@ -409,6 +418,7 @@ const CORTOS: {
     summary: "Doblado en frío, de a pocos grados por pasada, para acompañar el terreno.",
     vimeoId: VIDEO.curvado,
     locationName: "Tramo medio",
+    punto: [-67.79, -38.15],
   },
   {
     slug: "desfile",
@@ -416,6 +426,7 @@ const CORTOS: {
     summary: "La distribución sobre la pista, en el orden en que se van a soldar.",
     vimeoId: VIDEO.desfile,
     locationName: "Medanito",
+    punto: [-68.08, -38.27],
   },
   {
     slug: "soldadura-linea-regular",
@@ -423,6 +434,7 @@ const CORTOS: {
     summary: "La costura que une tubo con tubo a lo largo de la pista.",
     vimeoId: VIDEO.soldadura,
     locationName: "Tramo medio",
+    punto: [-67.92, -38.42],
   },
   {
     slug: "toco-a-toco",
@@ -430,14 +442,31 @@ const CORTOS: {
     summary: "Los empalmes que cierran los tramos ya soldados entre sí.",
     vimeoId: VIDEO.tocoAToco,
     locationName: "Tramo sur",
+    punto: [-68.18, -38.68],
+  },
+  {
+    slug: "cruce-ruta-151",
+    title: "Cruce Ruta 151",
+    summary: "El paso bajo la ruta, sin cortar el tránsito ni tocar la calzada.",
+    vimeoId: VIDEO.cruceRuta151,
+    locationName: "Lago Pellegrini",
+    punto: [-67.77, -38.9],
   },
 ];
+
+/**
+ * Cuántos simples están liberados. Los que siguen se muestran igual, en blanco
+ * y negro y con la leyenda "Próximamente": el objetivo es que se vea lo que
+ * viene, no esconderlo.
+ */
+const SIMPLES_LIBERADOS = 6;
 
 export const SEED_CORTOS: Content[] = CORTOS.map((c, i) => ({
   id: c.slug,
   slug: c.slug,
   type: "simple",
   status: "published",
+  locked: i >= SIMPLES_LIBERADOS,
   title: c.title,
   subtitle: null,
   summary: c.summary,
@@ -446,8 +475,8 @@ export const SEED_CORTOS: Content[] = CORTOS.map((c, i) => ({
   durationSeconds: null, // la resuelve Vimeo
   locationName: c.locationName,
   kp: null,
-  lat: null,
-  lng: null,
+  lat: c.punto[1],
+  lng: c.punto[0],
   tags: ["serie"],
   orderIndex: i + 1,
   publishedAt: `2026-04-${String(20 - i).padStart(2, "0")}T12:00:00Z`,
@@ -470,40 +499,16 @@ if (slugsRepetidos.length > 0) {
 /* Filas del carrusel                                                  */
 /* ------------------------------------------------------------------ */
 
-const porSlug = (slugs: string[]) =>
-  slugs.map((s) => SEED_CORTOS.find((c) => c.slug === s)!).filter(Boolean);
-
 /**
- * Solo contenidos simples: el carrusel de la home es la serie corta. A las
- * publicaciones se llega desde sus puntos en el mapa.
+ * El carrusel de la home lista los especiales. A los simples se llega desde el
+ * botón de la serie o tocando sus marcas verde agua sobre la traza.
  */
 export const SEED_RAILS: Rail[] = [
   {
-    id: "serie-un-minuto",
+    id: "especiales",
     slug: "serie-un-minuto",
-    title: "Serie · un minuto de ingeniería",
+    title: "Contenidos especiales",
     orderIndex: 1,
-    items: SEED_CORTOS,
-  },
-  {
-    id: "antes-del-cano",
-    slug: "antes-del-cano",
-    title: "Antes del caño",
-    orderIndex: 2,
-    items: porSlug(["topografia", "geodeteccion", "zanjeo"]),
-  },
-  {
-    id: "fabricacion-y-montaje",
-    slug: "fabricacion-y-montaje",
-    title: "Fabricación y montaje",
-    orderIndex: 3,
-    items: porSlug([
-      "acopio",
-      "planta-de-doble-junta",
-      "curvado",
-      "desfile",
-      "soldadura-linea-regular",
-      "toco-a-toco",
-    ]),
+    items: SEED_COMPLEJOS,
   },
 ];

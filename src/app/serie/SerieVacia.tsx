@@ -8,8 +8,8 @@ export default function SerieVacia() {
       <SiteHeader activo="serie" variante="solido" />
       <div className="grid flex-1 place-items-center px-6 py-20 text-center">
         <div className="max-w-md">
-          <p className="label-tech text-cyan">Serie · un minuto de ingeniería</p>
-          <h1 className="mt-3 text-2xl font-semibold tracking-tight text-ink">
+          <p className="label-tech text-cyan">Serie</p>
+          <h1 className="mt-3 text-2xl font-bold tracking-tight text-ink">
             Todavía no hay videos publicados
           </h1>
           <p className="mt-3 text-[14px] leading-relaxed text-ink-soft">

@@ -20,6 +20,7 @@ interface ContentRow {
   slug: string;
   type: ContentType;
   status: ContentStatus;
+  locked: boolean | null;
   title: string;
   subtitle: string | null;
   summary: string | null;
@@ -44,7 +45,7 @@ interface BlockRow {
 }
 
 const CONTENT_SELECT =
-  "id, slug, type, status, title, subtitle, summary, cover_url, vimeo_id, duration_seconds, location_name, kp, lat, lng, tags, order_index, published_at, content_blocks (id, type, position, data)";
+  "id, slug, type, status, locked, title, subtitle, summary, cover_url, vimeo_id, duration_seconds, location_name, kp, lat, lng, tags, order_index, published_at, content_blocks (id, type, position, data)";
 
 function toContent(row: ContentRow): Content {
   const blocks = (row.content_blocks ?? [])
@@ -65,6 +66,7 @@ function toContent(row: ContentRow): Content {
     slug: row.slug,
     type: row.type,
     status: row.status,
+    locked: row.locked ?? false,
     title: row.title,
     subtitle: row.subtitle,
     summary: row.summary,
@@ -117,10 +119,19 @@ function publicados(items: Content[]): Content[] {
     .sort((a, b) => a.orderIndex - b.orderIndex);
 }
 
-/** Especiales georreferenciados: los puntos que dibuja el mapa. */
-export async function getEspeciales(): Promise<MappedContent[]> {
+/** Especiales publicados, tengan o no punto en el mapa. */
+export async function getEspeciales(): Promise<Content[]> {
   const todos = await getPublishedContents();
-  return todos.filter((c) => c.type === "especial").filter(isMapped);
+  return todos.filter((c) => c.type === "especial");
+}
+
+/**
+ * Todo lo que el mapa puede dibujar: especiales y simples con coordenadas.
+ * El color de cada marca lo decide el tipo, no esta consulta.
+ */
+export async function getGeorreferenciados(): Promise<MappedContent[]> {
+  const todos = await getPublishedContents();
+  return todos.filter(isMapped);
 }
 
 /** Los simples, en orden de reproducción. */

@@ -3,52 +3,81 @@ import type { StyleSpecification } from "maplibre-gl";
 /**
  * Estilo del mapa, armado a mano sobre teselas raster de Esri (sin API key).
  *
- * Dos capas base intercambiables y, encima de ambas, un velo azul que es lo que
- * da la identidad cromática del sitio: el satélite se lee como una carta náutica
- * y no como una foto.
+ * Una sola fuente de imagen y dos lecturas de ella, que se alternan sin
+ * reconstruir el estilo: cambian la corrección de color del raster y la
+ * visibilidad del velo.
  *
  * Si en algún momento hace falta más definición o teselas vectoriales, el
  * reemplazo natural es MapTiler o Mapbox con token. Solo cambia este archivo.
  */
 
-export type Basemap = "satelite" | "oscuro";
+/**
+ * Dos lecturas del mismo terreno:
+ *
+ * - `satelite`: la imagen tal cual, sin velo ni retícula. Es la que se ve al
+ *   entrar, porque es la que muestra la obra de verdad.
+ * - `tactico`: la misma imagen bajo un velo azul y con retícula encima, con
+ *   aire de pantalla de instrumento.
+ */
+export type Basemap = "satelite" | "tactico";
 
 const ESRI_IMAGERY =
   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
 
-const ESRI_DARK =
-  "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}";
-
-const ESRI_DARK_LABELS =
-  "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}";
-
 const ATRIB_IMAGERY = "Imágenes: Esri, Maxar, Earthstar Geographics";
-const ATRIB_CANVAS = "Esri · HERE · Garmin · OpenStreetMap";
 
 /**
- * Atribución por capa base. La muestra el panel de referencias del mapa: el
+ * Atribución de las teselas. La muestra el panel de referencias del mapa: el
  * control propio de MapLibre se apoya abajo, donde el cajón de contenidos lo
- * taparía, y estas licencias exigen que el crédito se vea.
+ * taparía, y la licencia exige que el crédito se vea.
  */
 export const ATRIBUCION: Record<Basemap, string> = {
   satelite: ATRIB_IMAGERY,
-  oscuro: ATRIB_CANVAS,
+  tactico: ATRIB_IMAGERY,
+};
+
+export const NOMBRE_CAPA: Record<Basemap, string> = {
+  satelite: "Satélite",
+  tactico: "Táctico",
+};
+
+/** Velo azul: solo en modo táctico. En satélite la imagen va limpia. */
+export const VELO: Record<Basemap, { color: string; opacidad: number }> = {
+  satelite: { color: "#0a2b4d", opacidad: 0 },
+  tactico: { color: "#0a2b4d", opacidad: 0.42 },
 };
 
 /**
- * Velo azul por capa base: es lo que le da identidad cromática al mapa.
+ * Corrección de color del raster.
  *
- * Sobre el satélite se mantiene liviano a propósito, para que la imagen real
- * —el terreno, la pista abierta, los ríos— se siga leyendo por debajo del tinte.
+ * En satélite se toca lo mínimo —apenas un recorte de brillo para que los
+ * blancos no compitan con la traza—. En táctico se desatura y se rota el matiz
+ * hacia el azul, que es lo que da el aspecto de carta náutica.
  */
-export const VELO: Record<Basemap, { color: string; opacidad: number }> = {
-  satelite: { color: "#0a2b4d", opacidad: 0.24 },
-  oscuro: { color: "#06182e", opacidad: 0.42 },
+export const RASTER: Record<
+  Basemap,
+  {
+    "raster-saturation": number;
+    "raster-hue-rotate": number;
+    "raster-contrast": number;
+    "raster-brightness-max": number;
+  }
+> = {
+  satelite: {
+    "raster-saturation": -0.04,
+    "raster-hue-rotate": 0,
+    "raster-contrast": 0.02,
+    "raster-brightness-max": 0.98,
+  },
+  tactico: {
+    "raster-saturation": -0.18,
+    "raster-hue-rotate": 175,
+    "raster-contrast": 0.06,
+    "raster-brightness-max": 0.95,
+  },
 };
 
 export function buildStyle(basemap: Basemap): StyleSpecification {
-  const satelite = basemap === "satelite";
-
   return {
     version: 8,
     // Sin `glyphs` a propósito: no hay symbol layers en este estilo —los
@@ -61,19 +90,6 @@ export function buildStyle(basemap: Basemap): StyleSpecification {
         maxzoom: 18,
         attribution: ATRIB_IMAGERY,
       },
-      oscuro: {
-        type: "raster",
-        tiles: [ESRI_DARK],
-        tileSize: 256,
-        maxzoom: 16,
-        attribution: ATRIB_CANVAS,
-      },
-      etiquetas: {
-        type: "raster",
-        tiles: [ESRI_DARK_LABELS],
-        tileSize: 256,
-        maxzoom: 16,
-      },
     },
     layers: [
       {
@@ -82,46 +98,20 @@ export function buildStyle(basemap: Basemap): StyleSpecification {
         paint: { "background-color": "#03060d" },
       },
       {
-        id: "base-oscuro",
-        type: "raster",
-        source: "oscuro",
-        layout: { visibility: satelite ? "none" : "visible" },
-        paint: {
-          "raster-opacity": 0.95,
-          "raster-saturation": -0.1,
-          "raster-contrast": 0.1,
-          "raster-brightness-max": 0.72,
-        },
-      },
-      {
         id: "base-satelite",
         type: "raster",
         source: "satelite",
-        layout: { visibility: satelite ? "visible" : "none" },
-        paint: {
-          "raster-opacity": 0.96,
-          "raster-saturation": -0.18,
-          "raster-hue-rotate": 175,
-          "raster-contrast": 0.06,
-          "raster-brightness-max": 0.95,
-        },
+        paint: { "raster-opacity": 1, ...RASTER[basemap] },
       },
       {
-        // Velo azul: unifica ambas bases y baja el contraste del terreno para
-        // que la traza y los puntos queden siempre por encima visualmente.
+        // Velo azul: baja el contraste del terreno para que la traza y los
+        // puntos queden siempre por encima visualmente.
         id: "velo-azul",
         type: "background",
         paint: {
           "background-color": VELO[basemap].color,
           "background-opacity": VELO[basemap].opacidad,
         },
-      },
-      {
-        id: "etiquetas-lugares",
-        type: "raster",
-        source: "etiquetas",
-        layout: { visibility: satelite ? "none" : "visible" },
-        paint: { "raster-opacity": 0.55 },
       },
     ],
   } as StyleSpecification;

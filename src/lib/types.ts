@@ -21,6 +21,12 @@ export interface Content {
   slug: string;
   type: ContentType;
   status: ContentStatus;
+  /**
+   * Visible en el sitio pero todavía no reproducible: se muestra en blanco y
+   * negro con la leyenda "Próximamente". Distinto de `status`: un borrador no
+   * se ve en ningún lado, un bloqueado se ve a propósito.
+   */
+  locked: boolean;
   title: string;
   subtitle: string | null;
   /** Resumen corto: es lo que se lee en el hover del mapa y en la tarjeta. */

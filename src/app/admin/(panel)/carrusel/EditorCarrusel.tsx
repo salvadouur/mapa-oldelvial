@@ -44,7 +44,7 @@ export default function EditorCarrusel({ filas, contenidos }: Props) {
       ))}
 
       <section className="panel p-5">
-        <h2 className="mb-3 text-[15px] font-semibold tracking-tight text-ink">Nueva fila</h2>
+        <h2 className="mb-3 text-[15px] font-bold tracking-tight text-ink">Nueva fila</h2>
         <div className="flex flex-wrap items-end gap-3">
           <div className="min-w-56 flex-1">
             <Campo
@@ -105,7 +105,7 @@ function FilaCarrusel({ fila, contenidos }: { fila: Rail; contenidos: Content[] 
     <section className="panel p-5">
       <header className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-[15px] font-semibold tracking-tight text-ink">{fila.title}</h2>
+          <h2 className="text-[15px] font-bold tracking-tight text-ink">{fila.title}</h2>
           <p className="label-tech mt-1 text-[9px] text-ink-faint">
             /{fila.slug} · {seleccion.length} contenido{seleccion.length === 1 ? "" : "s"}
           </p>

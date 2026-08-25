@@ -1,27 +1,24 @@
 import SiteHeader from "@/components/SiteHeader";
 import MapaCliente from "@/components/map/MapaCliente";
 import ContentDrawer from "@/components/rail/ContentDrawer";
-import { getEspeciales, getSimples } from "@/lib/content/repository";
+import { getGeorreferenciados, getRails } from "@/lib/content/repository";
 import { getTrazaCoords } from "@/lib/traza-server";
-import type { Rail } from "@/lib/types";
 
 export default async function Home() {
-  const [especiales, simples] = await Promise.all([getEspeciales(), getSimples()]);
+  const [enMapa, todasLasFilas] = await Promise.all([getGeorreferenciados(), getRails()]);
   const traza = getTrazaCoords();
 
-  // Un solo carrusel con todos los simples, sin clasificar por filas: a los
-  // especiales se llega desde sus puntos en el mapa, que es lo que les da
-  // sentido a ellos; los simples son la playlist única del proceso.
-  const rails: Rail[] =
-    simples.length > 0
-      ? [{ id: "serie", slug: "serie", title: "Serie · un minuto de ingeniería", orderIndex: 0, items: simples }]
-      : [];
+  // El carrusel es de especiales. A los simples se llega por el botón de la
+  // serie o tocando sus marcas sobre la traza.
+  const rails = todasLasFilas
+    .map((fila) => ({ ...fila, items: fila.items.filter((c) => c.type === "especial") }))
+    .filter((fila) => fila.items.length > 0);
 
   return (
     <div className="relative h-dvh overflow-hidden">
-      <MapaCliente contenidos={especiales} traza={traza} />
-      <SiteHeader activo="traza" contenidos={especiales.length} />
-      <ContentDrawer rails={rails} especiales={especiales} />
+      <MapaCliente contenidos={enMapa} traza={traza} />
+      <SiteHeader activo="traza" conFicha />
+      <ContentDrawer rails={rails} />
     </div>
   );
 }
