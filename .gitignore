@@ -32,6 +32,16 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+# Solo lleva claves públicas (NEXT_PUBLIC_*), que igual viajan al navegador.
+!.env.production
+
+# copia del worker de MapLibre: la regenera `postinstall`
+/public/maplibre/
+
+# material fuente de la intro (los originales pesados; lo servible ya está
+# comprimido en public/intro-video)
+/intro-assets/
 
 # vercel
 .vercel
@@ -39,3 +49,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
