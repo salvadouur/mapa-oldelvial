@@ -47,6 +47,11 @@ export default function FilaContenido({
           >
             {publicado ? "Publicado" : "Borrador"}
           </span>
+          {contenido.locked && (
+            <span className="label-tech shrink-0 rounded bg-amber/15 px-1.5 py-0.5 text-[8px] text-amber">
+              Próximamente
+            </span>
+          )}
         </span>
         <span className="label-tech mt-1 block truncate text-[9px] text-ink-faint">{meta}</span>
       </Link>
